@@ -19,5 +19,42 @@
 (define carl (make-parent carl&bettina-children "Carl" 1926 "green"))
 
 
+;; fn-for-listOfChildren : loc -> ???
+;; listOfChildren is one of :
+;; - empty
+;; (cons parent (cons listOfChildren empty))
+
+#;
+(define (fn-for-listOfChildren loc)
+(
+    cond
+        [(empty? loc) (...)]
+        [else
+        (
+            ...(fn-for-parent (parent-loc (first loc)))
+            ...(fn-for-listOfChildren (rest loc))
+        )]
+))
+
+;; fn-for-parent : parent -> ???
+;; parent is one of :
+;; - false
+;; - (make-parent loc  name   date eyes)
+;; -              list string date string
+#;
+(define (fn-for-parent aParent)
+(
+    cond
+        [(false? aParent) (...)]
+        [else
+        (
+            ...(fn-for-listOfChildren (parent-loc aParent))
+            ...(parent-name aParent)
+            ...(parent-date aParent)
+            ...(parent-eyes aParent)
+        )]
+))
+
+
 (test)
 
