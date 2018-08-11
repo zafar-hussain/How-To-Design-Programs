@@ -143,11 +143,42 @@
 ; 
 ; Design a function that consumes String and Element and looks for a data element with the given 
 ; name. If it finds that element it produces the data, otherwise it produces false.
-; 
+;          D6:0
+;         /    \
+;       D5:0    D4:0
+;      /       /   \
+;    F3:3    F1:1     F2:2
 ;; Function name : find-name
 ;; String Element -> Integer (elt-data) or false
 ;; Element -> (make-elt  name data subs)
 ;; Mutual reference and self referencial funx. required
+(check-expect (find-name  F3   "")  false) ; base-case
+(check-expect (find-name  D5 "F3")      3)
+(check-expect (find-name  D6 "F3")      3)
+(check-expect (find-name  D5 "D4")  false)
+(check-expect (find-name  D6 "F1")      1)
+
+;(define (find-name anElemnt aString) false) ; 
+
+(define (find-name anElement aString)
+(
+    if (string=? aString (elt-name anElement))      ; string
+    (elt-data anElement)                            ; integer
+    (process-loe (elt-subs anElement) aString)              ; listOfElements
+))
+
+
+(define (process-loe loe aString) 
+(
+    cond [(empty? loe) false]
+         [(cons? loe)
+        (
+            or
+            (find-name (first loe) aString)         ; element
+            (process-loe (rest loe) aString)        ; listOfElement
+        )]
+        [else false]
+))
 
 ;; Self-ref. func name :find-ListOfElements
 ;; String loe -> loe / String ???
