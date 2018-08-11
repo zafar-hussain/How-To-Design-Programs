@@ -44,11 +44,6 @@
 (define D6 (make-elt "D6" 0 (list D4 D5)))
 
 ;Functions:
-;           D6:0
-;         /    \
-;       D5:0    D4:0
-;      /       /   \
-;    F3:3    F1:1     F2:2
 
 ; PROBLEM
 ; 
@@ -100,6 +95,48 @@
 ; 
 ; Design a function that consumes Element and produces a list of the names of all the elements in the tree. 
 ; 
+;           D6:0
+;         /    \
+;       D5:0    D4:0
+;      /       /   \
+;    F3:3    F1:1     F2:2
+
+(check-expect (listOfNames D5) (list "D5" "F3" ))
+(check-expect (listOfNames D4) (list "D4" "F1" "F2" ))
+(check-expect (listOfNames D6) (list "D6" "D4" "F1" "F2" "D5" "F3"))
+
+; (define (listOfNames aTree) empty); stub
+;(define-struct elt (name data subs))
+
+(define (listOfNames e)
+(
+    append
+    (list (elt-name e))                                ; string
+    (listOfElement1 (elt-subs e))         ; listOfElements
+))
+#; ; linear recursion
+(define (listOfElement1 loe)
+(
+    cond [(empty? loe) empty]
+         [else
+         (
+             append
+             (listOfNames (first loe))         ; element
+             (listOfElement1 (rest loe))       ; listof element
+         )]
+))
+
+; tail recursion
+(define (listOfElement1 loe0)
+(local [
+(define (listOfElement1 loe acc)
+(
+    cond [(empty? loe) acc]
+         [else (listOfElement1 (rest loe)
+                     (append acc (listOfNames (first loe))))]
+))]
+(listOfElement1 loe0 empty)))
+
 
 ; 
 ; PROBLEM
