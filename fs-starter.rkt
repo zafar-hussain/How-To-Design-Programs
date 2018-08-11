@@ -167,6 +167,8 @@
     (process-loe (elt-subs anElement) aString)              ; listOfElements
 ))
 
+;; Self-ref. func name :process-loe
+;; loe String  -> False / String ???
 
 (define (process-loe loe aString) 
 (
@@ -180,8 +182,7 @@
         [else false]
 ))
 
-;; Self-ref. func name :find-ListOfElements
-;; String loe -> loe / String ???
+
 
 
 
