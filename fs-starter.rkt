@@ -59,9 +59,11 @@
 
 (define(sum-file-data anElement)
 (
-    + 
-    (elt-data anElement)                        ; integer 
-    (sum-listOfElement (elt-subs anElement))    ; listOfElements
+    if 
+    (zero? (elt-data anElement))                        ; integer 
+    (sum-listOfElement (elt-subs anElement))            ; listOfElements
+    (elt-data anElement)
+
 ))
 
 #; ; linear recursion
