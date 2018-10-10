@@ -1,8 +1,8 @@
 ;; The first three lines of this file were inserted by DrRacket. They record metadata
 ;; about the language level of this file in a form that our tools can easily process.
-#reader(lib "htdp-beginner-reader.ss" "lang")((modname compound-structures) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
-;#lang racket
-;(require test-engine/racket-tests)
+;;; #reader(lib "htdp-beginner-reader.ss" "lang")((modname compound-structures) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
+#lang racket
+(require test-engine/racket-tests)
 
 ;;; Exercise 6.1.1 Evaluate the following expressions:
 ;;; 1. (distance-to-0 (make-posn 3 4))
@@ -12,7 +12,7 @@
 ;; posn -> (make-struct x y) -> struct
 ;; x y -> struct
 
-;;(define-struct posn  ( x y))
+(define-struct posn  ( x y))
 
 
 ;; distance-to-0 : posn -> number
@@ -42,4 +42,4 @@
    
 
 
-;;(test)
+(test)
