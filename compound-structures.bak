@@ -1,0 +1,27 @@
+#lang racket
+(require test-engine/racket-tests)
+
+;;; Exercise 6.1.1 Evaluate the following expressions:
+;;; 1. (distance-to-0 (make-posn 3 4))
+;;; 2. (distance-to-0 (make-posn (* 2 3) (* 2 4)))
+;;; 3. (distance-to-0 (make-posn 12 (−6 1)))
+
+;; posn -> (make-struct x y) -> struct
+;; x y -> struct
+
+(define-struct posn  ( x y))
+
+
+;; distance-to-0 : posn -> number
+;; returns the euler distance to (0, 0) from the given point
+;; the formula for euler distance to zero being : (sqrt (x^2 + y^2))
+;; Examples
+(check-expect (distance-to-0 (make-posn 0 0)) 0) ; basecase
+(check-expect (distance-to-0 (make-posn 1 1)) (sqrt(2)))
+
+
+(define (distance-to-0 aPosn) 0)
+
+
+
+(test)
