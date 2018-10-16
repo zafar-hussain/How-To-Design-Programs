@@ -57,9 +57,29 @@
    (aCircle-center c)
    (aCircle-radius c)
    (aCircle-color  c)
-       )
+   )
   )
 
+
+
+;; a helper function distance-between-points is required
+
+;; distance-between-points : posn posn -> number
+;; returns the euler distance between given posn (points)
+;; examples
+(check-expect (distance-between-points p00 p00) 0) ; basecase
+(check-expect (distance-between-points p00 p10) 1)
+(check-within (distance-between-points p10 p100100) (sqrt (+ (sqr (- 1 100)) (sqr ( - 0 100)))) 0.0001)
+
+;(define (distance-between-points p1 p2) 0) ; stub
+
+(define (distance-between-points p1 p2)
+  (sqrt
+   (+
+    (sqr
+     (- (posn-x p1) (posn-x p2)))
+    (sqr
+     (- (posn-y p1) (posn-y p2))))))
 
 ;Exercise 6.6.3 Use the template fun-for-circle to develop in-circle?.
 ; The function consumes a circle structure and a posn and determines whether or not the pixel is inside the circle.
@@ -70,14 +90,16 @@
 
 ;; in-circle? : circle posn ->  boolean
 ;; returns true if the distance of given point (posn) to center of circle is less than radius of circle
-;; a helper function distance-between-points is required
 
-;; distance-between-points : posn posn -> number
-;; returns the euler distance between given posn (points)
-;; examples
-(check-expect (distance-between-points p00 p00) 0) ; basecase
-(che
-(define (distance-between-points p1 p2) 0) ; stub
+(check-expect (in-circle? c00 p100100) false) ; basecase
+(check-expect (in-circle? c00 p00) true)
 
-
+;(define (in-circle? c p) false) ; stub
+(define (in-circle? c p)
+  (
+   cond
+    [(<= (distance-between-points (aCircle-center c) p) (aCircle-radius c)) true]
+    [else false]
+    )
+  )
 
