@@ -103,3 +103,12 @@
     )
   )
 
+
+;Exercise 6.6.4 Use the template fun-for-circle to develop translate-circle. The function
+;consumes a circle structure and a number delta. The result is a circle whose center is delta pixels
+;to the right of the input. The function has no effect on the canvas.
+;Geometric Translation: Moving a geometric shape along a straight line is referred to as a
+;translation.
+
+;; translate-circle : circle number -> circle
+;; returns a circle structure with the center-x increased by the given delta
