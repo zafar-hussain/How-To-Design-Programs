@@ -1,3 +1,6 @@
+;; The first three lines of this file were inserted by DrRacket. They record metadata
+;; about the language level of this file in a form that our tools can easily process.
+#reader(lib "htdp-advanced-reader.ss" "lang")((modname drawings) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #t #t none #f () #f)))
 ;;#lang racket
 (require htdp/draw)
 
@@ -41,11 +44,11 @@
 
 ;; consumes and draws a circle, centered at given posn, of radius and color extractred from circle-struct, returns true? if success
 ;; examples
-(start 300 300)
+;;(start 300 300)
 (check-expect (draw-a-circle c00) (draw-circle (make-posn 0 0)  10 'red))       ;base-case
 (check-expect (draw-a-circle c00) (draw-circle (make-posn 0 0) 10 'red))
 (check-expect (draw-a-circle c100100) (draw-circle (make-posn 100 100) 10 'green))
-(stop)
+;;(stop)
 
 ;; (define (draw-a-circle c) (draw-circle (make-posn 10 10) 10 'purple))
 
@@ -176,10 +179,11 @@
 ;;(define (move-circle c n) false) ; stub
 
 (define (move-circle c n)
-(and
- (draw-and-clear-circle c)
- (draw-a-circle (translate-circle c n))
- ))
+  (and
+   (draw-and-clear-circle c)
+   (draw-a-circle (translate-circle c n))
+   ))
+;;++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 ;Exercise 6.6.7 Provide a structure definition and a data definition for representing colored
 ;rectangles. A rectangle is characterized by four pieces of information: its upper-left corner, its
@@ -201,12 +205,156 @@
 #;
 (define fn-for-rect r
   (
-   .... rectangle-origin
-   .... rectangle-width
-   .... rectangle-height
-   .... rectangle-fill))
+   .... rectangle-origin r
+        .... rectangle-width r
+        .... rectangle-height r
+        .... rectangle-fill r
+        ))
 
 ;Exercise 6.6.8 Use the template fun-for-rect to develop draw-a-rectangle. The function
 ;consumes a rectangle structure and draws the corresponding rectangle on the screen. In contrast
 ;to circles, the entire rectangle is painted in the matching color. Remember to use (start 300 300)
 ;to create the canvas before testing the function
+
+;; draw-a-rectangle : rectangle -> boolean
+;; draws a filled rectangle
+;; examples
+;;(start 500 500)
+;;(check-expect (draw-a-rectangle r00) false) ; basecase
+(check-expect (draw-a-rectangle r00) (draw-solid-rect (rectangle-origin r00) (rectangle-width r00)
+                                                      (rectangle-height r00) (rectangle-fill r00)))
+(check-expect (draw-a-rectangle r100100) (draw-solid-rect (rectangle-origin r100100) (rectangle-width r100100)
+                                                          (rectangle-height r100100) (rectangle-fill r100100)))
+;;(stop)
+
+;(define (draw-a-rectangle r) false) ; stub
+(define (draw-a-rectangle r)
+  (draw-solid-rect
+   (rectangle-origin r)
+   (rectangle-width r)
+   (rectangle-height r)
+   (rectangle-fill r)))
+   
+;;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+;Exercise 6.6.9 Use the template fun-for-rect to develop in-rectangle?. The function consumes a
+;rectangle structure and a posn and determines whether or not the pixel is inside the rectangle. A
+;pixel is within a rectangle if its horizontal and vertical distances to the upper-left corner are
+;positive and smaller than the width and height of the rectangle, respectively.
+;Consider the rectangle in figure 14. This rectangle’s key parameters are (make-posn 2 3), 3,
+;and 2. The pixel labeled C is inside of the rectangle, B is outside.
+
+;; in-rectangle? : rectangle posn -> boolean
+;; returns true if the posn in inside the rectangle
+;; posn in inside a rectangle iff :
+;; - posn-x >= rectangle-center-x && posn-x <= rectangle-center-x + rectangle-width
+;; - posn-y >= rectangle-center-y && posn-y <= rectangle-center-y + rectangle-length
+
+;; examples
+(check-expect (in-rectangle? r00     p00) true)
+(check-expect (in-rectangle? r100100 p00) false)
+
+;(define (in-rectangle? r p) false); stub
+
+(define (in-rectangle? r p)
+  (
+   cond
+    [(and
+      (>= (posn-x p) (posn-x (rectangle-origin r)))
+      (<= (posn-x p) (+ (posn-x (rectangle-origin r)) (rectangle-width r))))
+     true]
+    [(and
+      (>= (posn-y p) (posn-y (rectangle-origin r)))
+      (<= (posn-y p) (+ (posn-y (rectangle-origin r)) (rectangle-height r))))
+     true]
+    [else false]
+    ))
+
+
+;;++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+;Exercise 6.6.10 Use the template fun-for-rect to develop translate-rectangle. The function
+;consumes a rectangle structure and a number delta. The result is a rectangle whose upper-left
+;corner is delta pixels to the right of the input. The function has no effect on the canvas.
+
+;; translate-rectangle : reactangle number -> rectangle
+;;                       struct     delta     struct
+;; returns a rectangle structure whoose x-coordinate of its origin is increased by the given delta
+(check-expect (translate-rectangle r00 0)  r00)
+(check-expect (translate-rectangle r00 10) (make-rectangle (make-posn (+ 0 10) 0) 10 10 'red))
+(check-expect (translate-rectangle r100100 100)
+              (make-rectangle (make-posn (+ (posn-x (rectangle-origin r100100)) 100)
+                                         (posn-y (rectangle-origin r100100))) 100 100 'black))
+ 
+;(define (translate-rectangle r d) (make-rectangle (make-posn 0 0) 10 10 'red)); stub
+(define (translate-rectangle r d)
+  (make-rectangle
+   (make-posn (+ (posn-x (rectangle-origin r)) d) (posn-y (rectangle-origin r)))
+   (rectangle-width r)
+   (rectangle-height r)
+   (rectangle-fill r)
+   ))
+;;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+;Exercise 6.6.11 Use the template fun-for-rect to develop clear-a-rectangle. It consumes a
+;rectangle structure and clears the corresponding rectangle on the canvas.
+
+;; clear-a-rectangle : rectangle -> boolean
+;; clears the given recatangle from the screen\
+;; use : (clear-solid-rect posn width height c) → true
+;; examples
+(check-expect (clear-a-rectangle r00) true)
+
+;; (define (clear-a-rectangle r) false) ; stub
+
+(define (clear-a-rectangle r)
+  (clear-solid-rect
+   (rectangle-origin r)
+   (rectangle-width r)
+   (rectangle-height r)
+   (rectangle-fill r)
+   ))
+
+;;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+;
+;It draws and clears a rectangle circle on the canvas and then produces a translated version.
+;Develop draw-and-clear-rectangle, which draws a rectangle, sleeps for a while, and then
+;clears the rectangle. Finally, create a rectangle and use the functions of this exercise set to move
+;it four times.
+
+;; draw-and-clear-rectangle : rectangle → boolean
+;; draws a rectangle, sleeps for a while, and then clears the rectangle
+(start 500 500)
+(check-expect (draw-and-clear-rectangle r00) true)
+(check-expect (draw-and-clear-rectangle r100100) true)
+(stop)
+
+;(define (draw-and-clear-rectangle r) false) ; stub
+
+(define (draw-and-clear-rectangle r)
+  (and
+   (draw-a-rectangle r)
+   (sleep-for-a-while 1)
+   (clear-a-rectangle r)
+   ))
+
+;; move-rectangle : number rectangle → rectangle
+;; to draw and clear a rectangle, translate it by delta pixels
+
+(define (move-rectangle delta a-rectangle)
+  (cond
+    [(draw-and-clear-rectangle a-rectangle)
+     (translate-rectangle a-rectangle delta)]
+    [else a-rectangle]))
+
+;;create a rectangle and use the functions of this exercise set to move
+;it four times.
+(start 500 500)
+(draw-a-rectangle
+ (move-rectangle 10
+                 (move-rectangle 10
+                                 (move-rectangle 10
+                                                 (move-rectangle 10 r100100)))))
+(stop)
+
