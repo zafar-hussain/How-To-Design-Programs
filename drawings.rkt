@@ -1,6 +1,3 @@
-;; The first three lines of this file were inserted by DrRacket. They record metadata
-;; about the language level of this file in a form that our tools can easily process.
-#reader(lib "htdp-beginner-reader.ss" "lang")((modname drawings) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
 ;;#lang racket
 (require htdp/draw)
 
@@ -148,14 +145,14 @@
 
 ;; draw-and-clear-circle : circle -> boolean
 ;; give a circlr, draws it with draw-a-circle, waits with sleep-for-a-while,and then clears it with clear-a-circle
-(start 300 300)
+;;(start 300 300)
 (check-expect (draw-and-clear-circle c100100)
               (
                and
                (draw-a-circle c100100)
                (sleep-for-a-while 10)
                (clear-a-circle c100100)))
-(stop)
+;;(stop)
 
 ;(define (draw-and-clear-circle c) false) ; stub
 
@@ -171,10 +168,10 @@
 ;time:
 ;; move-circle : number circle → circle
 ;; to draw and clear a circle, translate it by delta pixels
-(start 300 300)
+;;(start 300 300)
 (check-expect (move-circle c00     100) (draw-a-circle (make-aCircle (make-posn (+ 10 0) 0)      10 'red)))
 (check-expect (move-circle c100100 100) (draw-a-circle (make-aCircle (make-posn (+ 10 100)  100) 10 'green)))
-;;(stop)
+;;;;(stop)
 
 ;;(define (move-circle c n) false) ; stub
 
@@ -190,3 +187,26 @@
 ;plain numbers, and the last one is a color.
 ;Develop the template fun-for-rect, which outlines a function that consumes rectangles. Its
 ;result is undetermined
+
+;;structure definition and a data definition for representing colored rectangles
+;; rectangle : make-struct [origin width  height fill]
+;;                          posn   number number symbol
+
+(define-struct rectangle [origin width height fill])
+;; examples
+(define r00     (make-rectangle p00 10 10 'red))
+(define r100100 (make-rectangle p100100 100 100 'black))
+
+;; template fun-for-rect, which outlines a function that consumes rectangles
+#;
+(define fn-for-rect r
+  (
+   .... rectangle-origin
+   .... rectangle-width
+   .... rectangle-height
+   .... rectangle-fill))
+
+;Exercise 6.6.8 Use the template fun-for-rect to develop draw-a-rectangle. The function
+;consumes a rectangle structure and draws the corresponding rectangle on the screen. In contrast
+;to circles, the entire rectangle is painted in the matching color. Remember to use (start 300 300)
+;to create the canvas before testing the function
