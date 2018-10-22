@@ -7,7 +7,7 @@
 (check-expect (sum (cons 1 (cons 3 empty))) 4)
 (check-expect (sum (list 1 2 3)) 6)
 
-;(define (sum lon) 0) ; stub
+;(define (sum lon) 0) ;stub
 
 ;; template
 #;
