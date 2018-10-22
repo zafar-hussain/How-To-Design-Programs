@@ -1,0 +1,7 @@
+;; The first three lines of this file were inserted by DrRacket. They record metadata
+;; about the language level of this file in a form that our tools can easily process.
+#reader(lib "htdp-intermediate-reader.ss" "lang")((modname how-many-symbols) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
+;Exercise 9.5.2 Develop the function how-many-symbols, which consumes a list of symbols and
+;produces the number of items in the list.
+;Develop the function how-many-numbers, which counts how many numbers are in a list of
+;numbers. How do how-many-symbols and how-many-numbers differ?
