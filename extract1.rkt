@@ -46,11 +46,11 @@
 ;; extract>1 : inventory -> inventory
 ;; returns an inventory whose item's value is less than 1 dollar
 ;; Examples
-(check-expect (inventory>1 i0) empty)                      ; basecase
-(check-expect (inventory>1 i1) empty)
-(check-expect (inventory>1 i2) (cons item2 empty))
-(check-expect (inventory>1 (list item2)) (list item2))
-(check-expect (inventory>1 (list item0 item2 item2 item1 item2)) (list item2 item2 item2)) 
+;(check-expect (inventory>1 i0) empty)                      ; basecase
+;(check-expect (inventory>1 i1) empty)
+;(check-expect (inventory>1 i2) (cons item2 empty))
+;(check-expect (inventory>1 (list item2)) (list item2))
+;(check-expect (inventory>1 (list item0 item2 item2 item1 item2)) (list item2 item2 item2)) 
 
 ;(define (inventory>1 inventory) empty) ; stub
 
@@ -65,3 +65,24 @@
       ])
 )
 
+;Exercise 10.2.7 Develop the function raise-prices, which consumes an inventory and produces
+;an inventory in which all prices are raised by 5%.
+
+;; raise-prices : inventory -> inventory
+;; raises the values of the items of the given inventory by 5% and returns the new inventory
+;; Examples
+;(check-expect (raise-prices i0) empty)                      ; basecase
+;(check-expect (inventory>1 i0) empty)                      ; basecase
+(check-expect (inventory>1 i1) (cons (make-item (item-name item1) (+ (item-value item1) (* (item-value item1) 0.05))) empty))
+
+;(define (raise-prices loi) empty) ; stub
+
+(define (raise-prices loi)
+  (cond
+    [(empty? loi) empty]
+    [else
+     (cons
+      (make-item (item-name (first loi)) (+ (item-value (first loi)) (* (item-value (first loi)) 0.05)))       ; first loi is an item
+      (raise-prices (rest loi)))  ; rest loi is an inventory
+     ])
+  )
