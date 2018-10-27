@@ -16,19 +16,45 @@
 ;rectangle	(45,35) 	10X30		blue
 
 ;The table assumes a canvas of size 300 by 100.
-;Develop the template fun-for-losh, which outlines functions that consume a list-of-shapes.
 
 ;; size : make-struct [height      width]
 ;;                     number      number 
 (define-struct size [height width])
 
-;; shape : make-struct [shape		position 	size  	color]
+;; shape : make-struct [type		position 	size  	color]
 ;;	               'symbol		posn		struct  'symbol
 
-(define-struct shape [shape position size color])
+(define-struct shape [type position size color])
 ;; examples
 (define circle5050 (make-shape 'circle    (make-posn 50 50) (make-size 40 0) 'red))
 (define rect3020   (make-shape 'rectangle (make-posn 30 20) (make-size 5  5) 'blue))
 (define rect6520   (make-shape 'rectangle (make-posn 65 20) (make-size 5  5) 'blue))
-(define rect4075   (make-shape 'rectangle (make-posn 40 75) (make-size 20 10) 'blue))
-(define rect3020   (make-shape 'rectangle (make-posn 30 20) (make-size 5  5) 'blue))
+(define rect4075   (make-shape 'rectangle (make-posn 40 75) (make-size 20 10) 'red))
+(define rect4535   (make-shape 'rectangle (make-posn 45 35) (make-size 10 30) 'blue))
+
+;; template
+#;
+(define (fn-for-shape s)
+  (...
+   ... (shape-type s)
+   ... (posn-x (shape-position s))
+   ... (posn-y (shape-position s))
+   ... (cond
+         [(symbol=? (shape-type s) 'circle)    (... (size-height (shape-size s)))]
+         [(symbol=? (shape-type s) 'rectangle) (... (size-height (shape-size s))) (... (size-width (shape-size s)))])
+   ... (shape-color s)))
+
+;Develop the template fun-for-losh, which outlines functions that consume a list-of-shapes.
+
+;; template
+#;
+(define (fn-for-losh losh)
+  (cond
+    [(empty? losh) ... ]
+    [else
+     (...
+      ... (first losh)
+      ... (fn-for-losh (rest losh)))
+
+      ]
+    ))
