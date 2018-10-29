@@ -91,7 +91,7 @@
 (check-expect (draw-losh (cons circle5050 empty)) (and (start 300 100)
                                                        (draw-circle (make-posn 50 50) 40 'red)))
 (check-expect (draw-losh (cons circle5050 (cons  rect3020  empty))) (and (draw-circle     (make-posn 50 50) 40    'red)
-                                                                        (draw-solid-rect (make-posn 30 20) 5  5 'blue)))
+                                                                         (draw-solid-rect (make-posn 30 20) 5  5 'blue)))
 (check-expect (draw-losh (list circle5050 rect3020 rect6520 rect4075 rect4535)) (and                                                                      
                                                                                  (draw-circle     (make-posn 50 50) 40    'red)
                                                                                  (draw-solid-rect (make-posn 30 20) 5  5  'blue)
@@ -99,7 +99,7 @@
                                                                                  (draw-solid-rect (make-posn 40 75) 20 10 'blue)
                                                                                  (draw-solid-rect (make-posn 45 35) 10 30 'blue)))
 
-
+(stop)
 ;(define (draw-losh losh) #t) ; stub
 
 (define (draw-losh losh)
@@ -113,3 +113,48 @@
     ))
 
   
+;Exercise 10.3.3 Use the template fun-for-losh to develop translate-losh. The function consumes
+;a list-of-shapes and a number delta. The result is a list of shapes where each of them has been
+;moved by delta pixels in the x direction. The function has no effect on the canvas
+
+;; translate-shape : shape (struct), delta (number) -> shape
+;; moves the given shape by delta pixels in the x direction
+
+(check-expect (translate-shape circle5050 10) (make-shape 'circle    (make-posn (+ 50 10) 50) (make-size 40 0) 'red))
+(check-expect (translate-shape rect3020   20) (make-shape 'rectangle (make-posn (+ 30 20) 20) (make-size 5  5) 'blue))
+
+;(define (translate-shape s delta) (make-shape 'circle    (make-posn 50 50) (make-size 40 0) 'green)) ; stub
+
+(define (translate-shape s delta)
+  (make-shape
+   (shape-type s)
+   (make-posn (+ (posn-x (shape-position s)) delta)  ; delta added to posn-x
+              (posn-y (shape-position s)))
+   (shape-size s)
+   (shape-color s)))
+
+
+;; translate-losh : losh, delta (number) -> losh
+;; moves (adds) by delta pixels in the x direction
+;; does not draw anything on the canvas
+
+(check-expect (translate-losh empty 10) empty) ; basecase
+(check-expect (translate-losh (cons circle5050 empty) 60)
+              (cons (make-shape 'circle    (make-posn (+ 50 60) 50) (make-size 40 0) 'red) empty))
+                                                       
+(check-expect (translate-losh (cons circle5050 (cons  rect3020  empty)) 70)
+              (list
+               (make-shape 'circle    (make-posn (+ 50 70) 50) (make-size 40 0) 'red)
+               (make-shape 'rectangle (make-posn (+ 30 70) 20) (make-size 5  5) 'blue)))
+
+;(define (translate-losh losh delta) empty) ;stub
+
+(define (translate-losh losh delta)
+  (cond
+    [(empty? losh) empty]
+    [else
+     (cons
+      (translate-shape (first losh) delta)
+      (translate-losh (rest losh) delta))
+     ]
+    ))
