@@ -33,6 +33,8 @@
 (define rect4075   (make-shape 'rectangle (make-posn 40 75) (make-size 20 10) 'red))
 (define rect4535   (make-shape 'rectangle (make-posn 45 35) (make-size 10 30) 'blue))
 
+(define face (list circle5050 rect3020 rect6520 rect4075 rect4535))
+
 ;; template
 #;
 (define (fn-for-shape s)
@@ -86,10 +88,9 @@
 ;; draw-losh : losh -> boolean
 ;; draws the images in the given listOfShapes and returns true
 ;; examples
-(start 300 100)
+(start 400 400)
 (check-expect (draw-losh empty) #t) ; basecase
-(check-expect (draw-losh (cons circle5050 empty)) (and (start 300 100)
-                                                       (draw-circle (make-posn 50 50) 40 'red)))
+(check-expect (draw-losh (cons circle5050 empty)) (draw-circle (make-posn 50 50) 40 'red))
 (check-expect (draw-losh (cons circle5050 (cons  rect3020  empty))) (and (draw-circle     (make-posn 50 50) 40    'red)
                                                                          (draw-solid-rect (make-posn 30 20) 5  5 'blue)))
 (check-expect (draw-losh (list circle5050 rect3020 rect6520 rect4075 rect4535)) (and                                                                      
@@ -158,3 +159,129 @@
       (translate-losh (rest losh) delta))
      ]
     ))
+
+;Exercise 10.3.4 Use the template fun-for-losh to develop clear-losh. The function consumes a
+;list-of-shapes, erases each item on the list from the canvas, and returns true
+
+;; clear-shape : shape -> boolean
+;; clears the given shape
+;; size : make-struct [height      width]
+;; shape : make-struct [type		position 	size  	color]
+
+(check-expect (clear-shape circle5050) (clear-circle (shape-position circle5050)
+                                                     (size-height (shape-size circle5050))
+                                                     (shape-color circle5050)))
+
+(check-expect (clear-shape rect3020) (clear-solid-rect (shape-position rect3020)
+                                                       (size-height (shape-size rect3020))
+                                                       (size-width  (shape-size rect3020))
+                                                       (shape-color rect3020)))
+
+;(define (clear-shape s) #t) ;stub
+;; shape is one of [circle rectangle]
+
+(define (clear-shape s)
+  (cond
+    [(symbol=? (shape-type s) 'circle)
+     (clear-circle
+      (shape-position s)
+      (size-height (shape-size s))
+      (shape-color s))]
+
+    [(symbol=? (shape-type s) 'rectangle)
+     (clear-solid-rect
+      (shape-position s)
+      (size-height (shape-size s))
+      (size-width (shape-size s))
+      (shape-color s))]
+    ))
+
+
+
+
+;; clear-losh : losh -> boolean
+;; consumes a listOfShapes and erases each item from canvas, returns true
+
+(check-expect (clear-losh empty) #t) ; basecase
+(check-expect (clear-losh (cons circle5050 empty)) (clear-shape circle5050))
+(check-expect (clear-losh (list circle5050 rect3020)) (and
+                                                       (clear-shape circle5050)
+                                                       (clear-shape rect3020)))
+
+
+;(define (clear-losh losh) #t) ; stub
+
+(define (clear-losh losh)
+  (cond
+    [(empty? losh) #t ]
+    [else
+     (and
+      (clear-shape (first losh))
+      (clear-losh (rest losh)))]
+    ))
+
+;Exercise 10.3.5 Develop the function draw-and-clear-picture. It consumes a picture. Its effect is
+;to draw the picture, sleep for a while, and to clear the picture.
+
+;; draw-and-clear-picture : losh -> sleep -> clear-losh
+(start 300 300)
+(check-expect (draw-and-clear-picture empty) #t)
+(check-expect (draw-and-clear-picture (cons circle5050 empty)) (and
+                                                                (draw-losh (cons circle5050 empty))
+                                                                (sleep-for-a-while 1)
+                                                                (clear-losh (cons circle5050 empty))))
+(check-expect (draw-and-clear-picture (list circle5050 rect3020)) (and
+                                                                   (draw-losh (list circle5050 rect3020))
+                                                                   (sleep-for-a-while 1)
+                                                                   (clear-losh (list circle5050 rect3020))))
+
+(check-expect (draw-and-clear-picture face) (and
+                                             (draw-losh face)
+                                             (sleep-for-a-while 1)
+                                             (clear-losh face)))
+(stop)
+
+
+;(define (draw-and-clear-picture losh) #t) ; stub
+
+(define (draw-and-clear-picture losh)
+  (and
+   (draw-losh losh)
+   (sleep-for-a-while 1)
+   (clear-losh losh)))
+
+
+;Exercise 10.3.6 Develop the function move-picture. It consumes a number (delta) and a picture.
+;It draws the picture, sleeps for a while, clears the picture and then produces a translated version.
+;The result should be moved by delta pixels.
+
+;; move-picture : picture : draw -> wait -> clear -> translate -> draw
+(start 400 400)
+(define delta 100)
+;(check-expect (move-picture empty delta) #t)
+;(check-expect (move-picture (cons circle5050 empty) delta) (and
+;                                                            (draw-losh (cons circle5050 empty))
+;                                                            (sleep-for-a-while 1)
+;                                                            (clear-losh (cons circle5050 empty))
+;                                                            (draw-losh (translate-losh (cons circle5050 empty) delta))))
+;
+;(check-expect (move-picture (list circle5050 rect3020) delta) (and
+;                                                               (draw-losh (list circle5050 rect3020))
+;                                                               (sleep-for-a-while 1)
+;                                                               (clear-losh (list circle5050 rect3020))
+;                                                               (draw-losh (translate-losh (list circle5050 rect3020) delta))))
+
+(check-expect (move-picture face delta) (and
+                                         (draw-losh face)
+                                         (sleep-for-a-while 1)
+                                         (clear-losh face)
+                                         (draw-losh (translate-losh face delta))))
+;(stop)
+
+;(define (move-picture losh delta) #t) ; stub
+
+(define (move-picture losh delta) (and
+                                         (draw-losh losh)
+                                         (sleep-for-a-while 1)
+                                         (clear-losh losh)
+                                         (draw-losh (translate-losh losh delta))))
