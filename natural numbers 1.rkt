@@ -4,8 +4,40 @@
 ;;;   Exercise 11.2.1 Generalize hellos to repeat, which consumes a natural number n and a symbol
 ;;; and produces a list with n occurrences of the symbol.
 
+;; symbol-n-times : n (number) s (symbol) -> listOfSymbols
+;; returns a listOfSymbols, with symbol repeated n times
+;; Examples
+(check-expect (symbol-n-times 0 'aSymbol) empty) ; basecase
+(check-expect (symbol-n-times 1 'aSymbol) (cons 'aSymbol empty))
+(check-expect (symbol-n-times 3 'test) (list 'test 'test 'test))
 
+; (define (symbol-n-times n los) empty) ; stub
 
+;; template
+#;
+(define (fn-for-los n los)
+(cond
+    [(zero? n) ...]
+    [else
+    (...
+    ... (first los)
+    ... (fn-for-los (sub1 n) (rest los) )
+
+    )]
+
+))
+
+(define (symbol-n-times n s)
+(cond
+    [(zero? n) empty]
+    [else 
+    (cons 
+        s 
+        (symbol-n-times (sub1 n) s )
+    )]
+))
+
+(test)
 ;; ++++++++++++++++++++++++++++++++++++++++++++++++
 ;;; Exercise 11.2.2 Develop the function tabulate-f, which tabulates the values of
 ;;; ;; f : number → number
@@ -42,5 +74,5 @@
 
 
 
-(test)
+
 
