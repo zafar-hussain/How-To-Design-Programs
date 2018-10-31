@@ -1,6 +1,9 @@
 ;; The first three lines of this file were inserted by DrRacket. They record metadata
 ;; about the language level of this file in a form that our tools can easily process.
 #reader(lib "htdp-intermediate-reader.ss" "lang")((modname |Creating Lists,-Testing Functions|) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
+
+(require htdp/draw)
+
 ;#lang racket
 ;(require test-engine/racket-tests)
 ;
@@ -39,6 +42,42 @@
 ;; consumes a natural number and returns a list of random numbers between 20 and 120
 ;; uses draw-circles to test
 (check-expect (tie-dyed 0) empty) ; basecase
-(check-expect (tie-dyed 1) 
 
-(define (tie-dyed n) empty) ; stub
+;(define (tie-dyed n) empty) ; stub
+
+(define (tie-dyed n)
+  (cond
+    [(zero? n) empty]
+    [else
+     (cons
+      (random-n-m 20 120)
+      (tie-dyed (sub1 n)))
+     ]
+    ))
+
+;Exercise 9.5.8 Develop the function draw-circles, which consumes a posn p and a list of
+;numbers. Each number of the list represents the radius of some circle. The function draws
+;concentric red circles around p on a canvas, using the operation draw-circle.
+
+;; draw-circles : posn , lostOfNumbers -> boolean
+;; draws circles of radii from the given listOfNumbers and centered at the given posn
+(start 500 500)
+(check-expect (draw-circles (make-posn 100 100) empty) true); basecase
+(check-expect (draw-circles (make-posn 100 100) (cons 10 (cons 20 empty))) (and
+                                                                            (draw-circle  (make-posn 100 100) 10 'red)
+                                                                            (draw-circle  (make-posn 100 100) 20 'red)))
+
+
+;(define (draw-circles p loN) true) ; stub
+;; lon and be one of (empty or cons)
+(define (draw-circles p loN)
+  (cond
+    [(empty? loN) true]
+    [else
+     (and
+      (draw-circle p (first loN) 'red)
+      (draw-circles p (rest loN))
+      )]
+    ))
+  
+(draw-circles (make-posn 200 200) (tie-dyed 10))
