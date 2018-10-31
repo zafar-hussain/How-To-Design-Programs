@@ -81,3 +81,21 @@
     ))
   
 (draw-circles (make-posn 200 200) (tie-dyed 10))
+
+
+
+;Exercise 11.3.3 Develop the function create-temps. It consumes a natural number n and two
+;integers, called low and high. It produces a list of n integers that are between low and high.
+;Use create-temps to test check-range from exercise 9.5.4.
+;Finally, discuss the following questions. Can we simply feed the result of create-temps into
+;check-range or do we need to know the list that create-temps produced? Are there values for low
+;and high such that we don’t need to know the result of create-temps and yet we can predict the
+;result of the test? Which function tests which? What does this tell us about testing with
+;automatically generated test data?
+
+
+;Exercise 11.3.4 Develop the function create-prices, which consumes a natural number and
+;produces a list with a corresponding of prices between $.10 and $10.00 with increments of a
+;dime. Use create-prices to test dollar-store? from exercise 9.5.3.
+;Hint: How many dimes are there between $.10 and $10.00?
+
