@@ -276,12 +276,38 @@
                                          (sleep-for-a-while 1)
                                          (clear-losh face)
                                          (draw-losh (translate-losh face delta))))
-;(stop)
+(stop)
 
 ;(define (move-picture losh delta) #t) ; stub
 
 (define (move-picture losh delta) (and
                                          (draw-losh losh)
-                                         (sleep-for-a-while 1)
+                                         (sleep-for-a-while 5)
                                          (clear-losh losh)
                                          (draw-losh (translate-losh losh delta))))
+
+
+;; ++++++++++++++++++++++++++++++++++++++++++++++++
+;; +++++++++++++++++++++++++++++++++++++++++++++++
+;;; Exercise 11.2.3 Develop apply-n. The function consumes a natural number, n. It applies the
+;;; function move from exercise 10.3.6 n times to FACE, the list of shapes from exercise 10.3.1.
+;;; Each application should translate the shape by one pixel. The purpose of the function is to
+;;; simulate a continuously moving shape on a canvas, the last missing piece of the extended
+;;; exercise 10.3.
+
+(define move-face (move-picture face 100))
+;; apply-n : number -> boolean
+;; moves face n times
+(start 500 500)
+(check-expect (apply-n 0) #true) ; basecase
+(check-expect (apply-n 1) move-face)
+(check-expect (apply-n 4) (and
+                           move-face
+                           move-face
+                           move-face
+                           move-face))
+
+
+
+(define (apply-n n) #t) ; stub
+
