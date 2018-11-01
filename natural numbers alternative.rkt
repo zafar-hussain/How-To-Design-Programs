@@ -29,3 +29,24 @@
 ;(test)
 ;
 
+;; !>n<m -> number number -> number
+;; factorial between n m, where m > n
+;;examples 
+(check-expect (!>n<m 0 0 ) 1) ;basecase
+(check-expect (!>n<m 1 10) (! 10))
+(check-expect (!>n<m 20 23) (* 21 (*  22 23)))
+
+;(define (!>n<m n m) 1) ; stub
+(define (!>n<m n m)
+  (cond
+    [(= m n) 1 ]
+    [else
+     (*
+      m
+      (!>n<m n (sub1 m))
+      )]
+    ))
+
+;Exercise 11.4.3 Develop product-from-minus-11. The function consumes an integer n greater or
+;equal to -11 and produces the product of all the integers between -11 (exclusive) and n
+;(inclusive).
