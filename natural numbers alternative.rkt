@@ -50,3 +50,14 @@
 ;Exercise 11.4.3 Develop product-from-minus-11. The function consumes an integer n greater or
 ;equal to -11 and produces the product of all the integers between -11 (exclusive) and n
 ;(inclusive).
+
+;; product-from-minus-11 : number -> number
+;; returns the product of all the numbers from n down to right before -11  
+
+(check-expect (product-from-minus-11 -11) 1) ; basecase
+(check-expect (product-from-minus-11 -12) (* 1 -12))
+(check-expect (product-from-minus-11 -13) (* 1 (* -12 -13)))
+
+;(define (product-from-minus-11 n) 1) ; stub
+
+(define (product-from-minus-11 n) (!>n<m -11 n))
