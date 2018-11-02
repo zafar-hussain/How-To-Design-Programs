@@ -146,8 +146,25 @@
     ))
 
 
-;Exercise 11.4.7 Develop the function is-not-divisible-by <=i. It consumes a natural number [ > =
-;1], i, and a natural number m, with i < m. If m is not divisible by any number between 1
+;Exercise 11.4.7 Develop the function is-not-divisible-by <=i. It consumes a natural number [ > = 1],
+; i, and a natural number m, with i < m. If m is not divisible by any number between 1
 ;(exclusive) and i (inclusive), the function produces true; otherwise, its output is false.
 ;Use is-not-divisible-by <=i to define prime?, which consumes a natural number and
 ;determines whether or not it is prime.
+
+;; is-not-divisible-by<=i : m i[>= 1 && < m]
+;; returns true if m is not divisible by any number (1 i] else false
+(check-expect (is-not-divisible-by<=i 3 2) true) ; basecase 
+(check-expect (is-not-divisible-by<=i 4 2) false)
+(check-expect (is-not-divisible-by<=i 9 3) false)
+(check-expect (is-not-divisible-by<=i 11 10) true)
+
+;(define (is-not-divisible-by<=i m i) true) ; stub
+(define (is-not-divisible-by<=i m i)
+  (cond
+    [(= i 1) true]
+    [else
+     (and
+      (not (zero? (modulo m i)))
+      (is-not-divisible-by<=i m (sub1 i))
+      )]))
