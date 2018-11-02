@@ -119,3 +119,35 @@
       (tabulate-f-lim f limit (sub1 n))
       )]
     ))
+
+;Develop the function
+;;; tabulate-f-up-to-20 : N [ < = 20] → N
+;(define (tabulate-f-up-to-20 n-below-20) ...)
+;which tabulates the values of f for natural numbers less than 20. Specifically, it consumes a
+;natural number n less than or equal to 20 and produces a list of posns, each of which has the
+;shape (make-posn n (f n)) for some n between 0 and n (inclusively)
+
+;; tabulate-f-up-to-20 : N [ < = 20] → listOfPosn
+;;  consumes a natural number n less than or equal to 20 and produces a list of posns
+(check-expect (tabulate-f-up-to-20 f 20) empty) ; basecase
+(check-expect (tabulate-f-up-to-20 f 19) (cons (make-posn 19 (f 19)) empty))
+(check-expect (tabulate-f-up-to-20 f 18) (list (make-posn 18 (f 18)) (make-posn 19 (f 19))))
+
+;(define (tabulate-f-up-to-20 f n) empty) ; stub
+
+(define (tabulate-f-up-to-20 f n)
+  (cond
+    [(= n 20) empty]
+    [else
+     (cons
+      (make-posn n (f n))
+      (tabulate-f-up-to-20 f (add1 n))
+      )]
+    ))
+
+
+;Exercise 11.4.7 Develop the function is-not-divisible-by <=i. It consumes a natural number [ > =
+;1], i, and a natural number m, with i < m. If m is not divisible by any number between 1
+;(exclusive) and i (inclusive), the function produces true; otherwise, its output is false.
+;Use is-not-divisible-by <=i to define prime?, which consumes a natural number and
+;determines whether or not it is prime.
