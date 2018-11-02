@@ -103,3 +103,19 @@
 ;natural number or natural number [ > = 20] down to 0 or 20 (exclusive), respectively.
 ;Develop the function tabulate-f-lim, which tabulates the values of f in an analogous manner
 ;from some natural number n down to some other natural number limit
+
+;; tabulate-f-lim: limit, n -> n
+(check-expect (tabulate-f-lim f 20 20) empty) ; basecase
+(check-expect (tabulate-f-lim f 10 11) (cons (make-posn 11 (f 11)) empty))
+(check-expect (tabulate-f-lim f 15 17) (list (make-posn 17 (f 17)) (make-posn 16 (f 16))))
+
+;(define (tabulate-f-lim f limit n) empty) ; stub
+(define (tabulate-f-lim f limit n)
+  (cond
+    [(= limit n) empty] 
+    [else
+     (cons
+      (make-posn n (f n))
+      (tabulate-f-lim f limit (sub1 n))
+      )]
+    ))
