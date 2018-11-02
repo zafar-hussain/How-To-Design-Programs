@@ -213,3 +213,25 @@
       x
       (multiply (sub1 n) x))]
     ))
+
+
+;Exercise 11.5.3 Develop the function exponent, which consumes a natural number n and a
+;number x and computes x to the power n
+
+;; exponent : x n -> n [ all are numbers]
+;; returns x to the power n, or multiplies x to x, n times
+(check-expect (exponent 8 0) 1) ; basecase
+(check-expect (exponent 8 1) 8)
+(check-expect (exponent 8 2) (multiply 8 8))
+
+;(define (exponent x n) 1) ; stub
+(define (exponent x n)
+  (cond
+    [(zero? n) 1]
+    [else
+     (multiply
+      x
+      (exponent x (sub1 n))
+      )]
+    ))
+
