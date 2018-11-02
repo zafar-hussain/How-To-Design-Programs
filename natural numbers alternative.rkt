@@ -168,3 +168,48 @@
       (not (zero? (modulo m i)))
       (is-not-divisible-by<=i m (sub1 i))
       )]))
+
+
+
+;Exercise 11.5.1 Define add, which consumes two natural numbers, n and x, and produces n + x
+;without using Scheme’s +
+
+;; add : n[number] x[number] -> number
+;; returns the sum of n and x without using '+' operator
+(check-expect (add  0 99) 99) ; basecase
+(check-expect (add 99 1) 100)
+
+;(define (add n x) 0) ; stub
+(define (add n x)
+  (cond
+    [(zero? n) x]
+    [else
+     (add1
+      (add (sub1 n) x))
+     ]))
+
+
+;Exercise 11.5.2 Develop the function multiply-by-pi, which consumes a natural number and
+;multiplies it by 3.14 without using *. For example,
+;(= (multiply-by-pi 0) 0)
+;(= (multiply-by-pi 2) 6.28)
+;(= (multiply-by-pi 3) 9.42)
+
+;Define multiply, which consumes two natural numbers, n and x, and produces n * x without
+;using Scheme’s *.Eliminate + from these definitions, too.
+
+;; multiply : n[number] x[number] -> number
+;; returns n times x without using '*' operator
+(check-expect (multiply 0 99)           0) ; basecase
+(check-expect (multiply 1 99)  (add 0 99))
+(check-expect (multiply 2 99) (add 99 99))
+
+;(define (multiply n x) 0) ; stub
+(define (multiply n x)
+  (cond
+    [(zero? n) 0]
+    [else
+     (add
+      x
+      (multiply (sub1 n) x))]
+    ))
