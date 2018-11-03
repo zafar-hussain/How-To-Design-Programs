@@ -1,0 +1,18 @@
+;; The first three lines of this file were inserted by DrRacket. They record metadata
+;; about the language level of this file in a form that our tools can easily process.
+#reader(lib "htdp-intermediate-reader.ss" "lang")((modname |Recursive Auxiliary Functions|) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
+;#lang racket
+;(require test-engine/racket-tests)
+;
+
+;; insertion-sort : listofNumbers -> listofNumbers
+;; sorts the given list by insertion sort in descending
+(check-expect (insertion-sort empty) empty) ; basecase
+(check-expect (insertion-sort (cons 9 (cons 10 (cons 1  empty)))) (cons 10 (cons 9 (cons 1 empty))))
+(check-expect (insertion-sort (list  1 2 3 4 5)) (list 5 4 3 2 1))
+
+(define (insertion-sort lon) empty) ; stub
+
+
+;(test)
+;
