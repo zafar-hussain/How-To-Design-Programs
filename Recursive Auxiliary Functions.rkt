@@ -100,9 +100,9 @@
 ;(define (mail-insert m lom) (cons m empty)) ; stub
 (define (mail-insert m lom)
   (cond
-    [(empty? m lom) (cons m empty)]
-    [(<= m (first lom)) (cons m lom)]
-    [(> m (first lom))  (cons (first lom) (mail-insert m (rest lom)))]
+    [(empty? lom) (cons m empty)]
+    [(<= (mail-date m) (mail-date (first lom))) (cons m lom)]
+    [(>  (mail-date m) (mail-date (first lom))) (cons (first lom) (mail-insert m (rest lom)))]
     ))
 
 ;Also develop a program that sorts lists of mail messages by name. To compare two strings
