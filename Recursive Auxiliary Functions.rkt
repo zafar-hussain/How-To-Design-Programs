@@ -75,19 +75,19 @@
 ;A mail-message is a structure:
 ;(make-mail name n s)
 ;where name is a string, n is a number, and s is a string.
-(check-expect (sort-mail empty) empty) ; basecase
-(check-expect (sort-mail (cons m0 (cons m1 empty))) (cons m0 (cons m1 empty)))
-(check-expect (sort-mail (cons m1 (cons m0 empty))) (cons m0 (cons m1 empty)))
-(check-expect (sort-mail (cons m2 (cons m0 (cons m1 empty)))) (cons m0 (cons m1 (cons m2 empty))))
+(check-expect (sort-mail-by-date empty) empty) ; basecase
+(check-expect (sort-mail-by-date (cons m0 (cons m1 empty))) (cons m0 (cons m1 empty)))
+(check-expect (sort-mail-by-date (cons m1 (cons m0 empty))) (cons m0 (cons m1 empty)))
+(check-expect (sort-mail-by-date (cons m2 (cons m0 (cons m1 empty)))) (cons m0 (cons m1 (cons m2 empty))))
 
-;(define (sort-mail lom) empty) ; stub
-(define (sort-mail lom)
+;(define (sort-mail-by-date lom) empty) ; stub
+(define (sort-mail-by-date lom)
   (cond
     [(empty? lom) empty]
     [else
      (mail-insert
       (first lom)
-      (sort-mail (rest lom)))
+      (sort-mail-by-date (rest lom)))
      ]))
 
 ;; mail-insert : X loX -> loX
@@ -107,6 +107,59 @@
 
 ;Also develop a program that sorts lists of mail messages by name. To compare two strings
 ;alphabetically, use the string < ? primitive
+(check-expect (sort-mail-by-name empty) empty) ; basecase
+(check-expect (sort-mail-by-name (cons m0 (cons m1 empty))) (cons m0 (cons m1 empty)))
+(check-expect (sort-mail-by-name (cons m1 (cons m0 empty))) (cons m0 (cons m1 empty)))
+(check-expect (sort-mail-by-name (cons m2 (cons m0 (cons m1 empty)))) (cons m0 (cons m1 (cons m2 empty))))
+
+
+;(define (sort-mail-by-date lom) empty) ; stub
+(define (sort-mail-by-name lom)
+  (cond
+    [(empty? lom) empty]
+    [else
+     (mail-insert
+      (first lom)
+      (sort-mail-by-name (rest lom)))
+     ]))
+
+;; mail-insert : X loX -> loX
+;; inserts the given mail within the listOfMail in ascending order by date
+(check-expect (mail-insert-by-name m0 empty) (cons m0 empty)) ; basecase
+(check-expect (mail-insert-by-name m0 (cons m1 empty)) (cons m0 (cons m1 empty)))
+(check-expect (mail-insert-by-name m1 (cons m0 empty)) (cons m0 (cons m1 empty)))
+(check-expect (mail-insert-by-name m2 (cons m0 (cons m1 empty))) (cons m0 (cons m1 (cons m2 empty))))
+
+;(define (mail-insert-by-name m lom) (cons m empty)) ; stub
+(define (mail-insert-by-name m lom)
+  (cond
+    [(empty? lom) (cons m empty)]
+    [(string>=? (mail-from m) (mail-from (first lom))) (cons m lom)]
+    [(string<?  (mail-from m) (mail-from (first lom))) (cons (first lom) (mail-insert m (rest lom)))]
+    ))
+
+;; develop linear-search
+(check-expect (linear-search 1 empty) false) ; basecase
+(check-expect (linear-search 1 (list 1 2)) true)
+(check-expect (linear-search 1 (list 2 3 1)) true)
+
+;(define (linear-search x lox) false) ; stub
+(define (linear-search x lox)
+  (cond
+    [(empty? lox) false]
+    [(= x (first lox)) true]
+    [else (linear-search x (rest lox))]
+   ))
+
+
+;Develop the function search-sorted, which determines whether a number occurs in a sorted list
+;of numbers. The function must take advantage of the fact that the list is sorted
+(check-expect (search-sorted 1 empty) false) ; basecase
+(check-expect (search-sorted 1 (list 1 2)) true)
+(check-expect (search-sorted 2 (list  3 4)) false)
+(check-expect (search-sorted 1 (list 2 3)) false)
+
+;(define (search-sorted x lox) false) ; stub
 
 
 ;(test)
