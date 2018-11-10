@@ -11,24 +11,10 @@
 
 ;; binary tree is finite
 ;; it is either empty or with nodes
-
+;; each node, except of the root has a parent
 ;; root has no parent
 ;; each node has either 0, 1 or 2 child nodes
 ;; child nodes are called left-child or right-child
 ;; node without any chid is called a leaf.
 ;; examples
 (define node0 (make-node '0 empty empty)) ;; no children
-
-
-;; each node, can have one or more
-;; Parent
-;; Sibling
-;; Ancestor
-;; Descendant
-;; Subtree
-;; Left and right subtrees of a node of a binary tree
-;; Depth of a node
-;; Depth of a tree
-
-;; is Full binary trees : every leaf has the same depth.
-;; Complete binary tree : at the deepest level, all the nodes are as far left as possible
