@@ -126,3 +126,16 @@
       (eye-color   (child-mother fTree)))
      
      ]))
+
+
+(define (proper-blue-eyed-ancestor? a-ftree)
+  (cond
+    [(empty? a-ftree) false]
+    
+    [else (or
+           (symbol=? (child-eyecolor (child-father a-ftree)) 'blue)
+           (symbol=? (child-eyecolor (child-mother a-ftree)) 'blue)
+           
+
+           (proper-blue-eyed-ancestor? (child-father a-ftree))
+           (proper-blue-eyed-ancestor? (child-mother a-ftree)))]))
