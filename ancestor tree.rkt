@@ -54,3 +54,55 @@
       (blue-eyed-ancestor?   (child-mother fTree)))
      ]))
 
+;;Exercise 14.1.3 Develop count-persons. The function consumes a family tree node and produces
+;;the number of people in the corresponding family tree.
+
+;; count-person -> fTree -> number
+(check-expect (count-person empty)   0)
+(check-expect (count-person Carl)    1)
+(check-expect (count-person Adam)    3)
+(check-expect (count-person Gustav)  5)
+
+;(define (count-person fTree) 0) ; stub          
+(define (count-person fTree )
+  (cond
+    [(empty? fTree) 0]
+    [else
+     (+
+      1
+      (count-person   (child-father fTree))
+      (count-person   (child-mother fTree)))
+     ]))
+
+(define (get-age aChild current-year) (- current-year  (child-date aChild)))
+
+
+;;Exercise 14.1.4 Develop the function average-age. It consumes a family tree node and the
+;;current year. It produces the average age of all people in the family tree
+(check-expect (sum-of-age empty 2000) 0.0)
+(check-expect (sum-of-age Carl 2000) (get-age Carl 2000))
+(check-expect (sum-of-age Adam 2000)  (+ (get-age Carl 2000) (get-age Bettina 2000) (get-age Adam 2000)))
+
+
+;(define (sum-of-age fTree current-year) 0.0) ; stub
+(define (sum-of-age fTree current-year )
+  (cond
+    [(empty? fTree) 0.0]
+    [else
+     (+
+      (get-age fTree current-year)
+      (sum-of-age   (child-father fTree) current-year)
+      (sum-of-age   (child-mother fTree) current-year))
+     ]))
+
+
+(check-expect (avgerage-age empty 2000) 0.0)
+(check-expect (avgerage-age Carl 2000) (get-age Carl 2000))
+(check-expect (avgerage-age Adam 2000)  (/ (sum-of-age Adam 2000)  (count-person Adam)))
+
+;(define (avgerage-age fTree current-year) 0.0) ; stub
+(define (avgerage-age fTree current-year)
+(cond
+  [(empty? fTree) 0.0]
+  [else (/ (sum-of-age fTree current-year)  (count-person fTree))]
+  ))
