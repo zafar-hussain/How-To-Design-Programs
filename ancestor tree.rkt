@@ -5,7 +5,7 @@
 ;; empty
 ;; (make-child father mother 'name date 'eycolor)
 
-(define-struct child (father mother name date eyes))
+(define-struct child (father mother name date eyecolor))
 
 
 (define Carl    (make-child empty empty   'Carl    1926 'green))
@@ -33,4 +33,24 @@
      (child-date     fTeee)
      (child-eyecolor fTree)]))
      
+;blue-eyed-ancestor?, the function that determines
+;whether anyone in some given family tree has blue eyes:
+
+(check-expect (blue-eyed-ancestor? empty)  #f)
+(check-expect (blue-eyed-ancestor? Eva)    #t)
+(check-expect (blue-eyed-ancestor? Gustav) #t)
+(check-expect (blue-eyed-ancestor? Adam)   #f)
+(check-expect (blue-eyed-ancestor? Carl)   #f)
+
+;(define (blue-eyed-ancestor? Ft) #f) ;stub
+
+(define (blue-eyed-ancestor? fTree )
+  (cond
+    [(empty? fTree) #f]
+    [else
+     (or
+      (symbol=? (child-eyecolor fTree) 'blue)
+      (blue-eyed-ancestor?   (child-father fTree))
+      (blue-eyed-ancestor?   (child-mother fTree)))
+     ]))
 
