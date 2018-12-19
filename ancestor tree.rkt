@@ -102,7 +102,27 @@
 
 ;(define (avgerage-age fTree current-year) 0.0) ; stub
 (define (avgerage-age fTree current-year)
-(cond
-  [(empty? fTree) 0.0]
-  [else (/ (sum-of-age fTree current-year)  (count-person fTree))]
-  ))
+  (cond
+    [(empty? fTree) 0.0]
+    [else (/ (sum-of-age fTree current-year)  (count-person fTree))]
+    ))
+
+
+;Exercise 14.1.5 Develop the function eye-colors, which consumes a family tree node and
+;produces a list of all eye colors in the tree
+
+;(define (eye-color fTree) empty) ; stub
+(check-expect (eye-color empty) empty)
+(check-expect (eye-color Carl) (cons 'green empty))
+(check-expect (eye-color Adam) (cons 'yellow (cons 'green (cons 'green empty))))
+
+(define (eye-color fTree )
+  (cond
+    [(empty? fTree) empty]
+    [else
+     (append
+      (list (child-eyecolor fTree))
+      (eye-color   (child-father fTree))
+      (eye-color   (child-mother fTree)))
+     
+     ]))
