@@ -1,0 +1,16 @@
+;; The first three lines of this file were inserted by DrRacket. They record metadata
+;; about the language level of this file in a form that our tools can easily process.
+#reader(lib "htdp-intermediate-reader.ss" "lang")((modname bst) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
+;; bt is one of
+;; - empty
+;; - (make-node number node node)
+
+(define-struct node (number lft rgt)) ; node structure
+
+(define ten        (make-node 10 empty empty))
+(define twentyFour (make-node 24 empty empty))
+(define  ninetyNine (make-node 99 empty empty))
+
+(define fifteen      (make-node 15 ten   twentyFour))
+(define seventySeven (make-node 77 empty empty))
+(define ninetyFive   (make-node 95 empty ninetyNine))
