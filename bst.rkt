@@ -71,3 +71,12 @@
     [(= (node-number aBst) N) (node-pn aBst)]
     [(boolean? (search-bt N (node-lft  aBst))) (search-bt N (node-rgt  aBst))]
     [else (search-bt N (node-lft  aBst))]))
+
+;;##########################################################
+;Develop the function create-bst. It consumes a BST B, a number N, and a
+;symbol S. It produces a BST that is just like B and that in place of one false subtree contains the
+;node structure
+
+;;##########################################################
+;;Develop the function create-bst-from-list. It consumes a list of numbers and
+;; names. it produces a BST by repeatedly applying create-bst.
