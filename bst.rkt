@@ -3,7 +3,7 @@
 #reader(lib "htdp-intermediate-reader.ss" "lang")((modname bst) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
 ;; bst is one of
 ;; - empty
-;; - (make-node number node node)
+;; - (make-node number symbol node node)
 
 (define-struct node (number pn lft rgt)) ; node structure
 
@@ -77,6 +77,50 @@
 ;symbol S. It produces a BST that is just like B and that in place of one false subtree contains the
 ;node structure
 
+;(define (create-bst B N S) false) ; stub
+
+
+(check-expect (create-bst false 66 'a) (make-node 66 'a false false))
+(check-expect (create-bst (make-node 99 'z false false) 66 'a) (make-node 99 'z (make-node 66 'a false false) false))
+(check-expect (create-bst (make-node 66 'a false false) 53 'b) (make-node 66 'a (make-node 53 'b false false) false))
+(check-expect (create-bst (make-node 66 'a false false) 99 'z) (make-node 66 'a false (make-node 99 'z false false)))
+(check-expect (create-bst (create-bst false 66 'a) 53 'b)      (make-node 66 'a (make-node 53 'b false false) false))
+
+(define (create-bst aBst N S)
+  (cond
+    [(false? aBst) (make-node N S false false)]
+    [(< N (node-number aBst)) (make-node (node-number aBst) (node-pn aBst) (make-node N S false false) false)]
+    [(> N (node-number aBst)) (make-node (node-number aBst) (node-pn aBst) false (make-node N S false false))] 
+    ))
+
 ;;##########################################################
 ;;Develop the function create-bst-from-list. It consumes a list of numbers and
 ;; names. it produces a BST by repeatedly applying create-bst.
+
+;; function : create-bst-from-list : list -> bst
+
+;(define (create-bst-from-list aList) false) ; stub
+(check-expect (create-bst-from-list empty) false)
+(check-expect (create-bst-from-list '((1 one)))                  (create-bst false 1  'one))
+(check-expect (create-bst-from-list (list (list 1 'one)))        (create-bst false 1  'one))
+(check-expect (create-bst-from-list '((63 sixtyThree)))          (create-bst false 63 'sixtyThree))
+
+(check-expect (create-bst-from-list '((1 one) (63 sixtyThree)))
+              ;(make-node 63 'sixtyThree (make-node 1 'one false false) false))
+              (create-bst (create-bst false 63 'sixtyThree) 1 'one))
+
+(check-expect (create-bst-from-list '((99 ninetyNine) (63 sixtyThree)))
+              (make-node 63 'sixtyThree  false (make-node 99 'ninetyNine false false)))
+(check-expect (create-bst-from-list '((99 ninetyNine) (1 one) (63 sixtyThree)))
+              (make-node 63 'sixtyThree  (make-node 1 'one false false) (make-node 99 'ninetyNine false false)))
+(check-expect (create-bst-from-list '((1 one) (99 ninetyNine)  (63 sixtyThree)))
+              (make-node 63 'sixtyThree  (make-node 1 'one false false) (make-node 99 'ninetyNine false false)))
+
+(define (create-bst-from-list aList)
+  (cond
+    [(empty? aList) false]
+    [(empty? (rest aList)) (create-bst false (first (first aList)) (first (rest (first aList))))]
+    [else
+     (create-bst (create-bst-from-list (first (rest (aList)))) (first (first aList)))
+     ]
+    ))
