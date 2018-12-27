@@ -86,12 +86,30 @@
 (check-expect (create-bst (make-node 66 'a false false) 99 'z) (make-node 66 'a false (make-node 99 'z false false)))
 (check-expect (create-bst (create-bst false 66 'a) 53 'b)      (make-node 66 'a (make-node 53 'b false false) false))
 
+(check-expect (create-bst false 6 'b)  (make-node 6 'b false false))
+(check-expect (create-bst (make-node 4 'a false false) 5 'a)
+              (make-node 4 'a false (make-node 5 'a false false)))
+(check-expect (create-bst (make-node 4 'a false false) 3 'g)
+              (make-node 4 'a (make-node 3 'g false false) false))
+
+(check-expect (create-bst (make-node 4 'a (make-node 2 'a false false) false) 3 'g)
+              (make-node 4 'a (make-node 2 'a false (make-node 3 'g false false)) false))
+
+
+(check-expect (create-bst (make-node 4 'a (make-node 2 'a false false) false) 5 'g)
+              (make-node 4 'a (make-node 2 'a false false) (make-node 5 'g false false)))
+
+(check-expect (create-bst (make-node 4 'a false (make-node 6 'a false false) ) 2 'g)
+              (make-node 4 'a (make-node 2 'g false false) (make-node 6 'a false false)))
+
 (define (create-bst aBst N S)
   (cond
     [(false? aBst) (make-node N S false false)]
-    [(< N (node-number aBst)) (make-node (node-number aBst) (node-pn aBst) (make-node N S false false) false)]
-    [(> N (node-number aBst)) (make-node (node-number aBst) (node-pn aBst) false (make-node N S false false))] 
+    [(< N (node-number aBst)) (make-node (node-number aBst) (node-pn aBst) (create-bst (node-lft aBst) N S) (node-rgt aBst))]
+    [(> N (node-number aBst)) (make-node (node-number aBst) (node-pn aBst) (node-lft aBst) (create-bst (node-rgt aBst) N S))] 
     ))
+
+
 
 ;;##########################################################
 ;;Develop the function create-bst-from-list. It consumes a list of numbers and
@@ -101,26 +119,30 @@
 
 ;(define (create-bst-from-list aList) false) ; stub
 (check-expect (create-bst-from-list empty) false)
-(check-expect (create-bst-from-list '((1 one)))                  (create-bst false 1  'one))
-(check-expect (create-bst-from-list (list (list 1 'one)))        (create-bst false 1  'one))
-(check-expect (create-bst-from-list '((63 sixtyThree)))          (create-bst false 63 'sixtyThree))
+(check-expect (create-bst-from-list '((1 a) (2 g)))
+              (make-node 2 'g
+                         (make-node 1 'a false false)
+                         false)
+              )
+(check-expect (create-bst-from-list '((18 b) (2 g)))
+              (make-node 2 'g
+                         false
+                         (make-node 18 'b false false))
+              )
+(check-expect (create-bst-from-list '((1 a) (18 b) (2 g)))
+              (make-node 2 'g
+                         (make-node 1 'a false false)
+                         (make-node 18 'b false false))
+              )
 
-(check-expect (create-bst-from-list '((1 one) (63 sixtyThree)))
-              ;(make-node 63 'sixtyThree (make-node 1 'one false false) false))
-              (create-bst (create-bst false 63 'sixtyThree) 1 'one))
-
-(check-expect (create-bst-from-list '((99 ninetyNine) (63 sixtyThree)))
-              (make-node 63 'sixtyThree  false (make-node 99 'ninetyNine false false)))
-(check-expect (create-bst-from-list '((99 ninetyNine) (1 one) (63 sixtyThree)))
-              (make-node 63 'sixtyThree  (make-node 1 'one false false) (make-node 99 'ninetyNine false false)))
-(check-expect (create-bst-from-list '((1 one) (99 ninetyNine)  (63 sixtyThree)))
-              (make-node 63 'sixtyThree  (make-node 1 'one false false) (make-node 99 'ninetyNine false false)))
-
-(define (create-bst-from-list aList)
+(define (create-bst-from-list lons)
   (cond
-    [(empty? aList) false]
-    [(empty? (rest aList)) (create-bst false (first (first aList)) (first (rest (first aList))))]
+    [(empty? lons) false]
     [else
-     (create-bst (create-bst-from-list (first (rest (aList)))) (first (first aList)))
-     ]
-    ))
+     (create-bst 
+      (create-bst-from-list (rest lons))
+      (first (first lons))
+      (second (first lons)))]))
+
+
+
