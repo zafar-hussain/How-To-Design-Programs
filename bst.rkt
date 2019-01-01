@@ -144,5 +144,25 @@
       (first (first lons))
       (second (first lons)))]))
 
+;10.4-2 - cormen
+;Write an O.n/-time recursive procedure that, given an n-node binary tree, prints
+;out the key of each node in the tree
 
+;; get-keys : BT -> X (keys)
+;; given a Binary tree, this function prints the keys - returns a list of keys
 
+;(define (get-keys aBst) empty)        ; stub
+(check-expect (get-keys empty) empty) ; basecase
+
+(check-expect (get-keys (create-bst-from-list '((99 a) (66 b)))) '((99 a) (66 b)))
+(check-expect (get-keys (create-bst-from-list '((66 a) (53 b)))) '((66 a) (53 b)))
+
+(define (get-keys aBst)
+  (cond
+    [(false? aBst) empty]
+    [else
+     (cons '((node-number aBst) (node-pn aBst))
+           ( and
+             (get-keys (node-lft aBst))
+             (get-keys (node-rgt aBst))))
+     ]))
