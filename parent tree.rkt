@@ -1,0 +1,29 @@
+;; The first three lines of this file were inserted by DrRacket. They record metadata
+;; about the language level of this file in a form that our tools can easily process.
+#reader(lib "htdp-advanced-reader.ss" "lang")((modname |parent tree|) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #t #t none #f () #f)))
+;; definition for a children tree
+;; in ancestor tree, each node has a left and right parent
+;; but in a child-tree each node has a list of parent nodes
+;; parent : (make-parent listOfChildren name date eye-color)
+
+;; listofChildren is either
+;; - empty
+;; - (cons parent-structure listofChildren)
+
+;; these are parent and listOfChildren are mutually recursive
+
+;; parent structure
+(define-struct parent (loc name year eye-color))
+
+(define gustav (make-parent '() 'Gustav 1988 'brown))
+
+(define eva-fred-children '(gustav))
+(define eva  (make-parent eva-fred-children 'Eva  1965 'blue))
+(define fred (make-parent eva-fred-children 'Fred 1966 'pink))
+
+(define adam (make-parent '() 'Adam 1950 'yellow))
+(define dave (make-parent '() 'Dave 1955 'black))
+(define carl-bettina-children '(adam dave eva))
+
+(define carl    (make-parent carl-bettina-children 'Carl    1926 'green))
+(define bettina (make-parent carl-bettina-children 'Bettina 1926 'green))

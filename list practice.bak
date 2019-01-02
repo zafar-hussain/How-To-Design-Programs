@@ -63,25 +63,3 @@
      (cons
       (* 2 (first LON))
       (double-it (rest LON)))]))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;Design a data definition to represent a list of booleans, and a function to determine if all values in a given list are true.
-
-;; function name : all-true : ListOfBools -> bools
-;; returns true if all the elements of the list are true
-
-;(define (all-true lob) false)         ; stub
-(check-expect (all-true empty)    #t) ; basecase
-(check-expect (all-true '(#t #t)) #t)
-(check-expect (all-true '(#t #f)) #f)
-(check-expect (all-true '(#f #t)) #f)
-(check-expect (all-true '(#f #f)) #f)
-
-(define (all-true lob)
-  (cond
-    [(empty? lob) #t]
-    [else
-     (and
-      (first lob)
-      (all-true (rest lob)))]
-    ))
