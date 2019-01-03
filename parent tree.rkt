@@ -17,21 +17,17 @@
 
 (define gustav (make-parent '() 'Gustav 1988 'brown))
 
-(define eva-fred-children '(gustav))
+(define eva-fred-children (list gustav))
 (define eva  (make-parent eva-fred-children 'Eva  1965 'blue))
 (define fred (make-parent eva-fred-children 'Fred 1966 'pink))
 
 (define adam (make-parent '() 'Adam 1950 'yellow))
 (define dave (make-parent '() 'Dave 1955 'black))
-(define carl-bettina-children '(adam dave eva))
+(define carl-bettina-children (list adam dave eva))
 
 (define carl    (make-parent carl-bettina-children 'Carl    1926 'green))
 (define bettina (make-parent carl-bettina-children 'Bettina 1926 'green))
 
-;; Develop blue-eyed-descendant? for the children tree
-
-;; given a parent, returns true if any descendent is blur eyed
-;; blue-eyed-descendant? : parent  -> boolean
 ;; a parent is a structure
 ;;(define-struct parent (loc name year eye-color))
 
@@ -58,4 +54,39 @@
     [else
      (...
       (fn-for-parent (first loc)) ; mutual recursion
-      (fn-for-loc (rest loc)))])) ; self recursion
+      (fn-for-loc (rest loc)))]   ; self recursion
+    ))
+
+;; Develop blue-eyed-descendant? for the children tree
+
+;; given a parent, returns true if any descendent is blur eyed
+;; blue-eyed-descendant? : parent  -> boolean
+
+;(define (blue-eyed-descendant? p) #f)              ; stub
+(check-expect (blue-eyed-descendant? gustav)  #f)   ; basecase, list of children is empty
+(check-expect (blue-eyed-descendant? bettina) #t)
+(check-expect (blue-eyed-descendant? carl)    #t)
+(check-expect (blue-eyed-descendant? adam)    #f)
+
+(define (blue-eyed-descendant? p)
+  (or
+    (symbol=? (parent-eye-color p) 'blue)
+    (process-loc (parent-loc p))  
+    ))
+
+;; helper function
+;; process-loc : list of parents -> boolean
+
+;(define (process-loc loc) #f)       ; stub
+(check-expect (process-loc '()) #f)  ; basecase
+(check-expect (process-loc (list gustav)) #f)
+(check-expect (process-loc (list adam dave eva)) #t)
+
+(define (process-loc loc)
+  (cond
+    [(empty? loc) #f]
+    [else
+     (or
+      (blue-eyed-descendant? (first loc)) ; mutual recursion
+      (process-loc (rest loc)))]          ; self recursion
+    ))
