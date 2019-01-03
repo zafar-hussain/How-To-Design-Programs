@@ -27,3 +27,35 @@
 
 (define carl    (make-parent carl-bettina-children 'Carl    1926 'green))
 (define bettina (make-parent carl-bettina-children 'Bettina 1926 'green))
+
+;; Develop blue-eyed-descendant? for the children tree
+
+;; given a parent, returns true if any descendent is blur eyed
+;; blue-eyed-descendant? : parent  -> boolean
+;; a parent is a structure
+;;(define-struct parent (loc name year eye-color))
+
+;; template for a parent
+#;
+(define (fn-for-parent p)
+  (...
+   (parent-loc p)
+   (parent-name p)
+   (parent-year p)
+   (parent-eye-color p)))
+
+;; whereas (parent-loc p) is a list of parents
+;; which is one of
+;; - empty
+;; - list of parents
+;; first loc is a parent-struct, hence fn-for-parent is to be used
+
+;; template
+#;
+(define (fn-for-loc p)
+  (cond
+    [(empty? loc) ...]
+    [else
+     (...
+      (fn-for-parent (first loc)) ; mutual recursion
+      (fn-for-loc (rest loc)))])) ; self recursion
