@@ -70,9 +70,9 @@
 
 (define (blue-eyed-descendant? p)
   (or
-    (symbol=? (parent-eye-color p) 'blue)
-    (process-loc (parent-loc p))  
-    ))
+   (symbol=? (parent-eye-color p) 'blue)
+   (process-loc (parent-loc p))  
+   ))
 
 ;; helper function
 ;; process-loc : list of parents -> boolean
@@ -89,4 +89,36 @@
      (or
       (blue-eyed-descendant? (first loc)) ; mutual recursion
       (process-loc (rest loc)))]          ; self recursion
+    ))
+
+;Exercise 15.1.2 Develop the function how-far-removed. It determines how far a blue-eyed
+;descendant, if one exists, is removed from the given parent. If the given parent has blue eyes, the
+;distance is 0; if eyes is not blue but some of the structure′s children′s eyes are, the distance is 1;
+;and so on. If no descendant of the given parent has blue eyes, the function returns false when it
+;is applied to the corresponding family tree
+
+;; function how-far-removed : parent-struct -> number/boolean
+;; returns the number of steps a blue eyed descendent is removed from the given parent
+;; If the given parent has blue eyes, the sistance is 0
+;; returns false if no blue eyed descendent exists
+
+;(define (how-far-removed p) 0)      ; stub
+(check-expect (how-far-removed eva)     0)
+(check-expect (how-far-removed gustav) #f)
+(check-expect (how-far-removed bettina) 1)
+
+
+(define (how-far-removed p)
+  (cond
+    [(symbol=? (parent-eye-color p) 'blue) 0]
+    [else  (check-loc (parent-loc p))]
+    ))
+
+(define (check-loc loc)
+  (cond
+    [(empty? loc) #f]
+    [(boolean? (how-far-removed (first loc))) (check-loc (rest loc))] ; self recursion
+    [else
+     (add1
+      (how-far-removed (first loc)))] ; mutual recursion
     ))
