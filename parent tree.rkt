@@ -122,3 +122,89 @@
      (add1
       (how-far-removed (first loc)))] ; mutual recursion
     ))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;Exercise 15.1.3 Develop the function count-descendants, which consumes a parent and produces
+;the number of descendants
+
+;; function count-descendents: parent -> number
+;; returns the total number of descendents for the given parent 
+
+;(define (count-descendents p) 0)       ; stub
+(check-expect (count-descendents gustav) 0)
+(check-expect (count-descendents eva)    1)
+(check-expect (count-descendents carl)   4)
+
+(define (count-descendents p)
+  (cond
+    [(empty? (parent-loc p)) 0]
+    [else
+     (count-children (parent-loc p))]))
+
+;; func count-children : listOfChildren -> number
+;; loc is one of
+;; - empty
+;; - (cons parent-struct (rest loc))
+
+;(define (count-children loc) 0)         ; stub
+(check-expect (count-children empty) 0)  ; basecase
+(check-expect (count-children (list gustav)) 1)
+(check-expect (count-children (list adam dave eva)) 4)
+(check-expect (count-children (list bettina)) 5)
+
+;; template used self recursive
+(define (count-children loc)
+  (cond
+    [(empty? loc) 0]
+    [else
+     (+
+      1
+      (count-descendents (first loc))     ; mutual recursion
+      (count-children (rest loc)))]       ; self recursion
+    ))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;Exercise 15.1.4 Develop the function eye-colors, which consumes a parent and produces a list of
+;all eye colors in the tree. An eye color may occur more than once in the list.
+
+
+;; auxilary func get-children-eyecolor : listOfChildren -> listOfEyeColors
+;; returns a list of eye colors for the descendents of the given parent
+
+;(define (get-children-eyecolor loc)  '())       ; stub
+(check-expect (get-children-eyecolor '())                  '())
+(check-expect (get-children-eyecolor (list gustav))        '(brown))
+(check-expect (get-children-eyecolor (list adam dave eva)) (list 'yellow 'black 'blue 'brown))
+(check-expect (get-children-eyecolor (list bettina))       (list 'green 'yellow 'black 'blue 'brown))
+
+;; template to be used  : self-recursion + mutual-recursion
+;; as loc is one of
+;; - empty
+;; - (cons parent-struct (list of children)
+
+(define (get-children-eyecolor loc)
+  (cond
+    [(empty? loc) '()]
+    [else
+     (append
+      (eye-colors (first loc))
+      (get-children-eyecolor (rest loc))
+      )]
+    ))
+
+
+
+;; function : eye-colors : parent-Struct -> listOfEyeColors
+;; parent-structure : make-parent listOfChildren name year eye-color)
+
+;(define (eye-colors p) (list 'blue)) ; stub
+(check-expect (eye-colors gustav)  (list 'brown))
+(check-expect (eye-colors bettina) (list 'green 'yellow 'black 'blue 'brown))
+
+;; template used : structure
+
+(define (eye-colors p) 
+  (append
+   (list (parent-eye-color p))
+   (get-children-eyecolor (parent-loc p))
+   ))
