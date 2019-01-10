@@ -38,9 +38,20 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; auxilary function : (process-list2 x list2) -> list
 
-(define (process-list2 x list2) '())   ; stub
+;(define (process-list2 x list2) '())   ; stub
+(check-expect (process-list2 'a '()) '())
 (check-expect (process-list2 'a '(1 2)) (list (list 'a 1) (list 'a 2)))
 
+;; given x is paired with each member of the given list2
+;; template to be used : self recursive due to list2
+
+(define (process-list2 x list2)
+  (cond
+    [(empty? list2) '()]
+    [else
+     (cons
+      (list x (first list2))
+      (process-list2 x (rest list2)))]))
 
 
 ;Exercise 17.1.2 Develop cross. The function consumes a list of symbols and a list of numbers
@@ -61,7 +72,42 @@
   (cond
     [(empty? list1) '()]
     [else
-     (cons
+     (append
       (process-list2 (first list1) list2)
       (cross (rest list1)  list2)) 
-      ]))
+     ]))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;Exercise 17.6.1 Develop the function merge. It consumes two lists of numbers, sorted in
+;ascending order. It produces a single sorted1ist of numbers that contains all the numbers on both
+;inputs lists (and nothing else). A number occurs in the output as many times as it occurs on the
+;two input lists together.
+;Examples:
+;(merge(list 1 3 5 7 9) (list 0 2 4 6 8))
+;;; expected value:
+;(list 0 1 2 3 4 5 6 7 8 9)
+;(merge (list 1 8 8 11 12) (list 2 3 4 8 13 14))
+;;; expected value:
+;(list 1 2 3 4 8 8 8 11 12 13 14);
+
+;; function name : merge : list list -> list
+;; returns a merged list of two given lists
+
+;(define (merge list1 list2) '())    ; stub
+(check-expect (merge '() (list 0 2 4))  (list 0 2 4))     ; basecase - list1 is empty
+(check-expect (merge (list 1 3 5) '() ) (list 1 3 5))     ; basecase - list2 is empty
+(check-expect (merge (list 1 3) (list 2 4))  (list 1 2 3 4))
+(check-expect (merge (list 1 3 5 7 9)    (list 0 2 4 6 8))      (list 0 1 2 3 4 5 6 7 8 9))
+(check-expect (merge (list 1 8 8 11 12) (list 2 3 4 8 13 14))  (list 1 2 3 4 8 8 8 11 12 13 14)) ;- list1 longer
+(check-expect (merge (list 1 8 8 11 12 13) (list 2 3 4 8 14))  (list 1 2 3 4 8 8 8 11 12 13 14)) ;- list2 longer
+
+;; template to use : self recursion, both lists simultenously parsed
+
+(define (merge list1 list2)
+  (cond
+    [(empty? list1) list2]
+    [(empty? list2) list1]
+    [(< (first list1) (first list2)) (append (list (first list1)) (merge (rest list1) list2))]
+    [else
+     (append (list (first list2)) (merge list1 (rest list2)))]
+    ))
