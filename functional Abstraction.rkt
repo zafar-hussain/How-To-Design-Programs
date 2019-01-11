@@ -55,4 +55,47 @@
            first_lon
            rest_lon))]))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;Exercise 19.1.6 Recall the definition of sort, which consumes a list of numbers and produces a
+;;sorted version:
+;; sort: list-of-numbers → list-of-numbers
+;; to construct a list with all items from alon in descending order
+#;
+(define (sort alon)
+  (local ((define (sort alon)
+            (cond
+              [(empty? alon) empty]
+              [else (insert (first alon) (sort (rest alon)))]))
+          (define (insert an alon)
+            (cond
+              [(empty? alon) (list an)]
+              [else (cond
+                      [(> an (first alon)) (cons an alon)]
+                      [else (cons (first alon) (insert an (rest alon)))])])))
+    (sort alon)))
+
+;;Define an abstract version of sort that consumes the comparison operation in addition to the list
+;;of numbers. Use the abstract version to sort (list 2 3 1 5 4) in ascending and descending order.
+
+(define (my_sort func alon)
+  (local ((define (sort alon)
+            (cond
+              [(empty? alon) empty]
+              [else (insert func (first alon) (sort (rest alon)))]))
+          (define (insert func an alon)
+            (cond
+              [(empty? alon) (list an)]
+              [else
+               (local
+                 ((define first-lon (first alon)))
+                 (cond
+                   [(func an first-lon) (cons an alon)]
+                   [else (cons first-lon (insert func an (rest alon)))]))])))
+    (sort alon)))
+
+(define  (ascending lon) (my_sort < lon))
+(define  (decending lon) (my_sort > lon))
+
+(check-expect (ascending (list 2 3 1 5 4)) (list 1 2 3 4 5))
+(check-expect (decending (list 2 3 1 5 4)) (list 5 4 3 2 1))
 
