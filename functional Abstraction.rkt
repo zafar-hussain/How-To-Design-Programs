@@ -14,12 +14,12 @@
 ;; template used : atomic + self recursive
 
 (define (my_min lon)
-;  (cond
-;    [(empty? (rest lon)) (first lon)]
-;    [else
-;     (if (< (first lon) (my_min (rest lon)))
-;         (first lon)
-;         (my_min (rest lon)))]))
+  ;  (cond
+  ;    [(empty? (rest lon)) (first lon)]
+  ;    [else
+  ;     (if (< (first lon) (my_min (rest lon)))
+  ;         (first lon)
+  ;         (my_min (rest lon)))]))
   (filter? < lon))
 
 ;; function my_max : listOfNumbers -> number
@@ -32,22 +32,27 @@
 ;; template used : atomic + self recursive
 
 (define (my_max lon)
-;  (cond
-;    [(empty? (rest lon)) (first lon)]
-;    [else
-;     (if (> (first lon) (my_max (rest lon)))
-;         (first lon)
-;         (my_max (rest lon)))]))
+  ;  (cond
+  ;    [(empty? (rest lon)) (first lon)]
+  ;    [else
+  ;     (if (> (first lon) (my_max (rest lon)))
+  ;         (first lon)
+  ;         (my_max (rest lon)))]))
   (filter? > lon))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;the abstract
 
 (define (filter? func lon)
+  
   (cond
     [(empty? (rest lon)) (first lon)]
     [else
-     (if (func (first lon) (filter? func (rest lon)))
-         (first lon)
-         (filter? func (rest lon)))]))
+     (local 
+       ((define first_lon (first lon))
+        (define rest_lon  (filter? func (rest lon))))
+       (if (func first_lon rest_lon)
+           first_lon
+           rest_lon))]))
+
 
