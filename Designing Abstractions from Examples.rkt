@@ -43,7 +43,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;Exercise 21.1.3 Define natural-f, which is the abstraction of the above two functions, by example:
 
-;;  natural-f  : (X  ->  Y)  N X P -> Y ; P is '() for copy and X for n-adder
+;;  natural-f  : (X  ->  Y)  N X P -> Y ; P is '() for copy and X for n-adder basecase
 
 (define (natural-f f N X P)
   (cond
