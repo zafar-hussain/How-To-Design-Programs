@@ -1,0 +1,7 @@
+;; The first three lines of this file were inserted by DrRacket. They record metadata
+;; about the language level of this file in a form that our tools can easily process.
+#reader(lib "htdp-advanced-reader.ss" "lang")((modname fold) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #t #t none #f () #f)))
+Exercise 21.1.2 Define fold, which is the abstraction of the following two functions:
+;; sum : (listof number) → number ;; product: (listof number) → number
+;; to compute the sum of ;; to compute the product of
+;; the numbers on alon ;; the numbers on alon
