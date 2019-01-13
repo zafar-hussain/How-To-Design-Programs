@@ -37,7 +37,14 @@
 (define (evens n)
   (local
     ((define (doubl-it x) (* (add1 x) 2)))
-  (build-list n doubl-it)))
+    (my-build-list n doubl-it)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-4. to define tabulate from exercise 21.1.1
+;4. to define tabulate from exercise 21.1.1
+;(define (tabulate-Sin N) '())      ; stub
+(check-expect (tabulate-Sin 0) '())
+(check-within (tabulate-Sin 5) (list (sin 0) (sin 1) (sin 2) (sin 3) (sin 4)) 0.1)
+
+(define (tabulate-Sin N)
+  (my-build-list N sin))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
