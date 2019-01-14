@@ -121,3 +121,40 @@
     
     (my-map add3 lon)))
        
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; filter: (f: X -> boolean) listOfX -> listOfX
+;; given a list and a boolean function, filter returns a list without the elements for which the boolean function is false
+
+;(define (my-filter f lox) '())              ; stub
+(check-expect (my-filter zero? '()) '())    ; basecase
+(check-expect (my-filter zero? (list 1 2 5 0 2 0 4)) (list 0 0))
+
+;; template used : atomic and self recursive as lox is either empty or (cons s lox)
+(define (my-filter f lox)
+  (cond
+    [(empty? lox) '()]
+    [else
+     (local
+       ((define rest-lox (my-filter f (rest lox))))
+       (if (f (first lox))
+           (cons (first lox) rest-lox)
+           rest-lox)
+       )]))
+
+;;Use filter to define the following functions:
+
+;;1. eliminate-exp, which consumes a number, ua, and a list of toy structures (containing name
+;;and price) and produces a list of all those descriptions whose price is below ua;
+
+;; eliminate-exp:(f: X -> boolean) loX -> loX
+;; given a list of toy structures (make-toy name price), it eleminates all the structures with price below the given threshold ua
+(define-struct toy (name price))
+
+;(define (eliminate-exp       ua lot)  '())        ; stub
+(check-expect (eliminate-exp 99 '())  '())        ; basecase
+(check-expect (eliminate-exp 99 (list (make-toy 'bat 100) (make-toy 'ball 88)))  (list (make-toy 'bat 100)))
+
+(define (eliminate-exp ua lot)
+  (local
+    ((define (f x) (>= (toy-price x) ua)))
+    (my-filter f lot)))
