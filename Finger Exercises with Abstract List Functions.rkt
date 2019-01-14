@@ -104,3 +104,20 @@
      (cons
       (f (first lon))
       (my-map f (rest lon)))]))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;3. move-all, which consumes a list of posn structures and translates each by adding 3 to the x-component.
+
+;(define (move-all lon) '())           ; stub
+(define a (make-posn 1 2))
+(define b (make-posn 3 4))
+(define c (make-posn 5 6))
+
+(check-expect (move-all '()) '())     ; basecase
+(check-expect (move-all (list a b c)) (list  (make-posn 4 2) (make-posn 6 4) (make-posn 8 6)))
+
+(define (move-all lon)
+  (local ((define (add3 p) (make-posn (+ (posn-x p) 3) (posn-y p))))
+    
+    (my-map add3 lon)))
+       
