@@ -47,4 +47,60 @@
 
 (define (tabulate-Sin N)
   (my-build-list N sin))
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;5. to define diagonal, which consumes a natural number n and creates a list of lists of 0 and 1.
+;;Example:
+;;(equal? (diagonal 3)
+;;(list
+;;(list 1 0 0)
+;;(list 0 1 0)
+;;(list 0 0 1)))
+;;Use local if function definitions require auxiliary functions
+;
+;(define (diagonal N)      '())   ; stub
+;(check-expect (diagonal 0) '())   ; basecase
+;(check-expect (diagonal 3)
+;              (list
+;               (list 1 0 0)
+;               (list 0 1 0)
+;               (list 0 0 1)))
+;
+;;; f: X -> X
+;;; returns 1 if given number is 3 else 0 
+;
+;(check-expect (f 2) 1)
+;(check-expect (f 1) 0)
+;(check-expect (f 0) 0)
+;
+;(define (f x ) (if (=  x 2) 1 0))
+;
+;;; rows : N -> list of N
+;;; returns a list with 1 at the nth position and  zeros
+;
+;;(define (rows N) '())                 ; stub
+;(check-expect (rows 2) (list 0 0 1))
+;(check-expect (rows 1) (list 0 1 0))
+;(check-expect (rows 0) (list 1 0 0))
+;
+;(define (rows N) (build-list 3 f))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;Exercise 21.2.2 Use map to define the following functions:
+;1. convert-euro, which converts a list of U.S. dollar amounts into a list of euro amounts based
+;on an exchange rate of 1.22 euro for each dollar;
+
+;; map: (f: X -> Y) listOfX -> listOfY
+;; applies the given function to each element of the given list
+(define (f x) (* x 1.22))
+
+;(define (my-map f lon) '())                          ; stub
+(check-expect (my-map f '())           '())          ; basecase 
+(check-expect (my-map f  (list 1 2 3)) (list 1.22 2.44 3.66))
+
+(define (my-map f lon)
+  (cond
+    [(empty? lon) '()]
+    [else
+     (cons
+      (f (first lon))
+      (my-map f (rest lon)))]))
