@@ -151,10 +151,64 @@
 (define-struct toy (name price))
 
 ;(define (eliminate-exp       ua lot)  '())        ; stub
-(check-expect (eliminate-exp 99 '())  '())        ; basecase
 (check-expect (eliminate-exp 99 (list (make-toy 'bat 100) (make-toy 'ball 88)))  (list (make-toy 'bat 100)))
 
 (define (eliminate-exp ua lot)
   (local
     ((define (f x) (>= (toy-price x) ua)))
     (my-filter f lot)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;2. recall, which consumes the name of a toy, called ty, and a list of names, called lon, and
+;produces a list of names that contains all components of lon with the exception of ty;
+
+;(define (recall       ty lot)  '())        ; stub
+(check-expect (recall 'bat (list (make-toy 'bat 100) (make-toy 'ball 88)))  (list (make-toy 'ball 88)))
+
+(define (recall ty lot)
+  (local
+    ((define (f x) (not (symbol=? (toy-name x) ty))))
+    (my-filter f lot)))
+    
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;3. selection, which consumes two lists of names and selects all those from the second one that
+;are also on the first.
+
+;; selection: (f: X loX -> boolean) loX -> loX
+;; returns a list of names that exist in both the given lists
+
+;;(define (selection loX loY) '())                             ; stub
+(check-expect (selection (list 'bat) '()) '())               ; basecase
+(check-expect (selection (list 'cap) (list 'bat 'ball)) '())
+(check-expect (selection (list 'bat 'ball) (list 'bat 'ball)) (list 'bat 'ball))
+
+(define (selection loX loY)
+  (local
+    ((define (in loX X)
+       (cond
+         [(empty? loX) #f]
+         [else
+          (or
+           (symbol=? X (first loX))
+           (in (rest loX) X))])))
+    
+    (my-filter in loY))) 
+
+ 
+
+;;; in : X loX -> boolean
+;;; returns true if the given X exists in the giveb loX
+;
+;;(define (in loX X)          #f)        ; stub
+;(check-expect (in '() 'bat)  #f)        ; basecase
+;(check-expect (in (list 'bat 'ball) 'bat) #t)
+;(check-expect (in (list 'bat 'ball) 'cap) #f)
+;
+;(define (in loX X)
+;  (cond
+;    [(empty? loX) #f]
+;    [else
+;     (or
+;      (symbol=? X (first loX))
+;      (in (rest loX) X))]))
+;  
