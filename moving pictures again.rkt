@@ -46,6 +46,14 @@
 ;(stop)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;Exercise 6.6.3 Use the template fun-for-circle to develop in-circle?. The function consumes a
+;circle structure and a posn and determines whether or not the pixel is inside the circle. All pixels
+;whose distance to the center is less or equal to the radius are inside the circle; the others are
+;outside
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;Exercise 6.6.4 Use the template fun-for-circle to develop translate-circle. The function
 ;consumes a circle structure and a number delta. The result is a circle whose center is delta pixels
 ;to the right of the input.The function has no effect on the canvas.
@@ -66,11 +74,11 @@
 ;a circle structure and clears the corresponding circle on the canvas.
 
 ;(define (clear-a-circle aCircle) #f)    ;ctub
-(start 300 300) 
-(draw-a-circle red-circle)
-(check-expect (clear-a-circle red-circle) #t)
-(sleep-for-a-while 2)
-(stop)
+;(start 300 300) 
+;(draw-a-circle red-circle)
+;(check-expect (clear-a-circle red-circle) #t)
+;(sleep-for-a-while 2)
+;(stop)
 
 (define (clear-a-circle aCircle)
   (clear-circle
@@ -85,3 +93,24 @@
 ;(clear-a-circle red-circle)
 ;(sleep-for-a-while 2)
 ;(stop)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;Exercise 6.6.6 Define the function draw-and-clear-circle, which draws a circle structure, waits
+;for a short time, and clears it. To implement a waiting period, the teachpack draw.ss provides the
+;function sleep-for-a-while. It consumes a number and puts the program to sleep for that many
+;seconds; its result is true. For example, (sleep-for-a-while 1) waits for one second.
+
+;(define (draw-and-clear-circle aCircle) #f)    ; stub
+
+(check-expect (draw-and-clear-circle red-circle) #t)
+
+
+(define (draw-and-clear-circle aCircle)
+  (and
+   ;(start 300 300) 
+   (draw-a-circle aCircle)
+   (sleep-for-a-while 3)
+   (clear-a-circle aCircle)
+   (sleep-for-a-while 3)
+   (stop)
+   ;))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
