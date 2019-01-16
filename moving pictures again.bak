@@ -21,25 +21,3 @@
   (circle-center aCircle)        ; returns a posn with x and y co-ordinates
   (circle-radius aCircle)
   (circle-color aCircle))
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;Exercise 6.6.2 Use fun-for-circle to develop draw-a-circle. The function consumes a circle
-;structure and draws the corresponding circle on the screen. Use (start 300 300) to create the
-;canvas before testing the function.
-
-;; draw-a-circle : (make-circle (posn number symbol))
-;; draws the given circle structure
-
-(define (draw-a-circle aCircle)
-  (draw-circle
-   (circle-center aCircle)      
-   (circle-radius aCircle)
-   (circle-color aCircle)))
-
-(require htdp/draw)
-(start 300 300) 
-(draw-a-circle red-circle)
-(sleep-for-a-while 2)
-(draw-a-circle blue-circle)
-(sleep-for-a-while 2)
-(stop)
