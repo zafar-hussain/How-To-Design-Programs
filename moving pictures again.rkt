@@ -101,7 +101,7 @@
 
 ;(define (draw-and-clear-circle aCircle) #f)    ; stub
 
-(check-expect (draw-and-clear-circle red-circle) #t)
+;(check-expect (draw-and-clear-circle red-circle) #t)
 
 
 (define (draw-and-clear-circle aCircle)
@@ -111,6 +111,37 @@
    (sleep-for-a-while 3)
    (clear-a-circle aCircle)
    (sleep-for-a-while 3)
-   (stop)
-   ;))
+   ;(stop)
+   ))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; move-circle : number circle → circle
+;; to draw and clear a circle, translate it by delta pixels
+(define (move-circle delta a-circle)
+  (cond
+    [(draw-and-clear-circle a-circle) (translate-circle a-circle delta)]
+    [else a-circle]))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;Exercise 21.4.1 Abstract the functions draw-a-circle and clear-a-circle into a single function
+;process-circle.
+
+;;process-circle: X Y -> boolean ; Y is a symbol either 'draw or 'clear
+
+;(define (process-circle aCircle action) #f)       ;stub
+(start 300 300)
+(check-expect (process-circle red-circle 'draw)  #t)
+(sleep-for-a-while 20)
+
+
+(check-expect (process-circle red-circle 'clear) #t)
+(sleep-for-a-while 20)
+(stop)
+
+;; template to be used : atomic one of 'draw or 'clear
+(define (process-circle aCircle action)
+  (cond
+    [(symbol=? action  'draw) (draw-a-circle aCircle)]
+    [(symbol=? action 'clear) (clear-a-circle aCircle)]))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;Define translate-circle using process-circle
