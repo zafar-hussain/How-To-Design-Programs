@@ -91,3 +91,16 @@
      (+
       5
       (a-fives (sub1 n)))]))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;Exercise 23.2.2.   Develop the non-recursive function a-fives-closed. It consumes a natural number and
+;determines the corresponding term in the above series. A non-recursive function is sometimes called a closed form. 
+
+;; a-fives-closed: X-> X
+;(define (a-fives-closed n) 8)         ; stub
+(check-expect (a-fives-closed 0) 8)   ; basecase
+(check-expect (a-fives-closed 2) 18)
+
+(define (a-fives-closed n)
+  (local
+    ((define f (+ 3 ( * 5 ( + n 1)))))
+    f))
