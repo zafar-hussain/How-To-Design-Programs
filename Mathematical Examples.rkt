@@ -72,3 +72,22 @@
            (f n)
            (series (sub1 n)))])))
     (series n)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;index  0  1  2  3  4  5 ...
+;series 8 13 18 23 28 33 ...
+;Exercise 23.2.1.   Develop the recursive function a-fives, which consumes a natural number and recursively
+;determines the corresponding term in the above series
+
+;; a-fives: X-> X
+;(define (a-fives n) 8)         ; stub
+(check-expect (a-fives 0) 8)   ; basecase
+(check-expect (a-fives 2) 18)
+
+(define (a-fives n)
+  (cond
+    [(zero? n) 8]
+    [else
+     (+
+      5
+      (a-fives (sub1 n)))]))
