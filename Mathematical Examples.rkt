@@ -76,31 +76,72 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;index  0  1  2  3  4  5 ...
 ;series 8 13 18 23 28 33 ...
-;Exercise 23.2.1.   Develop the recursive function a-fives, which consumes a natural number and recursively
+;Exercise 23.2.1.   Develop the recursive function g-fives, which consumes a natural number and recursively
 ;determines the corresponding term in the above series
 
-;; a-fives: X-> X
-;(define (a-fives n) 8)         ; stub
-(check-expect (a-fives 0) 8)   ; basecase
-(check-expect (a-fives 2) 18)
+;; g-fives: X-> X
+;(define (g-fives n) 8)         ; stub
+(check-expect (g-fives 0) 8)   ; basecase
+(check-expect (g-fives 2) 18)
 
-(define (a-fives n)
+(define (g-fives n)
   (cond
     [(zero? n) 8]
     [else
      (+
       5
-      (a-fives (sub1 n)))]))
+      (g-fives (sub1 n)))]))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;Exercise 23.2.2.   Develop the non-recursive function a-fives-closed. It consumes a natural number and
+
+;Exercise 23.2.2.   Develop the non-recursive function g-fives-closed. It consumes a natural number and
 ;determines the corresponding term in the above series. A non-recursive function is sometimes called a closed form. 
 
-;; a-fives-closed: X-> X
-;(define (a-fives-closed n) 8)         ; stub
-(check-expect (a-fives-closed 0) 8)   ; basecase
-(check-expect (a-fives-closed 2) 18)
+;; g-fives-closed: X-> X
+;(define (g-fives-closed n) 8)         ; stub
+(check-expect (g-fives-closed 0) 8)   ; basecase
+(check-expect (g-fives-closed 2) 18)
 
-(define (a-fives-closed n)
+(define (g-fives-closed n)
   (local
     ((define f (+ 3 ( * 5 ( + n 1)))))
     f))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;Exercise 23.3.3.   Develop the function seq-g-fives, which consumes a natural number n and creates the sequence
+;of the first n terms according to g-fives or g-fives-closed
+
+;(define (seq-g-fives n) '())      ; stub
+(check-expect (seq-g-fives 0) '(8))
+(check-expect (seq-g-fives 5) '(8 13 18 23 28 33))
+
+(define (seq-g-fives n)
+  (build-list (add1 n) g-fives-closed))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;Exercise 23.3.4.   Develop geometric-series. The function consumes two numbers: start and s. Its result is a function that
+;represents the geometric series whose starting point is start and whose factor is s. For example, (geometric-series 3 5) yields
+;g-fives (or g-fives-closed)
+
+;; geometric-series: X Y -> listOf X
+;; returns a geomentric series (list) whose starting point and factor is given
+
+;(define (geometric-series start s)     8)     ; start
+(check-expect (geometric-series 3 5)   8)
+;(check-expect (geometric-series 3 5) 8)
+
+;(define (geometric-series start s)
+;  (local
+;    ((define (f n) (+ start ( * s ( + n 1)))))
+;    f))
+;  
+
+
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;Exercise 23.3.5.   Use series to determine the sum of the g-fives sequence for the bounds 3, 7, and 88. Use series to
+;determine the sum of (geometric-series 1 .1) for the bounds 3, 7, 88. Can an infinite geometric series have a sum?
+
