@@ -118,5 +118,15 @@
   (series-local a-fives-closed n))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;Exercise 23.2.4 Develop the function seq-a-fives, which consumes a natural number n and
+;creates the sequence of the first n terms according to a-fives or a-fives-closed. Hint: Use buildlist
 
+;; seq-a-fives : X -> listOf X
+;; returns a list of numbers - a-fives from index 0 till n
 
+;(define (seq-a-fives n) '(8))      ; stub
+(check-expect (seq-a-fives 0) '(8))
+(check-expect (seq-a-fives 5) '(8 13 18 23 28 33))
+
+(define (seq-a-fives n)
+  (build-list (add1 n) a-fives-closed )) 
