@@ -129,4 +129,21 @@
 (check-expect (seq-a-fives 5) '(8 13 18 23 28 33))
 
 (define (seq-a-fives n)
-  (build-list (add1 n) a-fives-closed )) 
+  (build-list (add1 n) a-fives-closed ))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;Exercise 23.2.5 Develop arithmetic-series. The function consumes two numbers: start and s. Its
+;result is a function that represents the arithmetic series whose starting point is start and whose
+;summand is s. For example, (arithmetic-series 3 5) yields a-fives (or a-fives-closed). Similarly,
+;(arithmetic-series 0 2) produces a function that represents the series of even numbers.
+
+;; arithmetic-series : X X -> (f:X -X)
+;; given a start and summand, it returns a function that would return a aritmetic series number
+
+(check-expect ((arithmetic-series 3 5) 2) (a-fives 2))
+
+(define (arithmetic-series start s)
+  (local
+    ((define (a-series n)
+       (+ start (* s (add1 n)))))
+    a-series))
