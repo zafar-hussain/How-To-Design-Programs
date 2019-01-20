@@ -39,7 +39,7 @@
 (check-expect (g-fives-closed 2) 75)
 
 (define (g-fives-closed n)
-  (* 3 (expt n 5)))
+  (* 3 (expt 5 n)))
 
 
 
