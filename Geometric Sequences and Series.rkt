@@ -22,4 +22,24 @@
      (*
       5
       (g-fives (sub1 n)))]
-    ))  
+    ))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; index : 0 1   2   3 
+;; value : 3 15 75 375
+
+;Exercise 23.3.2 Develop the non-recursive function g-fives-closed. It consumes a natural number
+;and determines the corresponding term in the above series
+
+;; g-fives-close: X -> X
+;; returns the geometric multiple for the given number
+
+;(define (g-fives-closed n) 3)        ; stub
+(check-expect (g-fives-closed 0) 3)  ; basecase
+(check-expect (g-fives-closed 1) 15)
+(check-expect (g-fives-closed 2) 75)
+
+(define (g-fives-closed n)
+  (* 3 (expt n 5)))
+
+
+
