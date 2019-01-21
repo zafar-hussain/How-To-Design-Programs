@@ -40,6 +40,22 @@
 
 (define (g-fives-closed n)
   (* 3 (expt 5 n)))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;Exercise 23.3.3 Develop the function seq-g-fives, which consumes a natural number n and
+;creates the sequence of the first n terms according to g-fives or g-fives-closed
 
 
+;; seq-g-fives: X -> listOf X
+;; returns a listOf g-fives, given a number n
 
+;(define (seq-g-fives n) '(3))      ; stub
+(check-expect (seq-g-fives 0) '(3)) ; basecase
+(check-expect (seq-g-fives 3) '(3 15 75 375))
+
+(define (seq-g-fives n)
+  (build-list (add1 n) g-fives-closed))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    
+
+              
