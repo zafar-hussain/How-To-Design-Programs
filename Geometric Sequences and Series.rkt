@@ -57,5 +57,18 @@
   (build-list (add1 n) g-fives-closed))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     
-
+;Exercise 23.3.4 Develop geometric-series. The function consumes two numbers: start and s. Its
+;result is a function that represents the geometric series whose starting point is start and whose
+;factor is s. For example, (geometric-series 3 5) yields g-fives (or g-fives-closed).
               
+;; geometric-series: X X -> X
+;; consumes start and s and returns a function like (g-fives-closed n)
+
+(check-expect ((geometric-series 3 5) 3) 375)
+
+(define (geometric-series start s)
+  (local
+    ((define (f n)
+       (* start (expt s n))))
+    f))
+    
