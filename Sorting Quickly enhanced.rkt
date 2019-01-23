@@ -17,8 +17,10 @@
 
 (define (quick-sort LOX)
   (cond
+    [(< (length LOX) 100) (sort LOX <)]
     [(empty? LOX) '()]
     [(empty? (rest LOX)) (list (first LOX))]
+    
     [else
      (append
       (quick-sort (smaller-than (first LOX) (rest LOX)))
@@ -53,4 +55,9 @@
   (filter (lambda (b) (< X b)) LOX ))
 
 ;;(time  (quick-sort (build-list 10 (lambda (x) (random (* (add1 x) 99))))))
+
+;Exercise 25.2.3 While quick-sort quickly reduces the size of the problem in many cases, it is
+;inappropriately slow for small problems. Hence people often use quick-sort to reduce the size of
+;the problem and switch to a different sort function when the list is small enough.
+
 
