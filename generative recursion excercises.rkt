@@ -15,13 +15,19 @@
 (check-expect (tabulate-div 1) '(1))  ; terminating condition
 (check-expect (tabulate-div 10) '(10 5 2 1))
 
-;; structural recursion
+;; generative  recursion
 
 (define (tabulate-div X)
-  (cond
-    [(= X 1) '(1)]
-    [else
-     (if
-      (zero? (remainder X 
-      X
-      (tabulate-div (sub1 X)))]))
+  (local
+    ((define (aux X C)
+       (cond
+         [(= C 1) '(1)]
+         [else
+          (if
+           (zero? (remainder X C))
+           (cons C (aux X (sub1 C)))
+           (aux X (sub1 C)))]
+         )))
+    (aux X X)))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
