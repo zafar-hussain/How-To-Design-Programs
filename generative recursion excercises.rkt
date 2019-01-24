@@ -30,4 +30,57 @@
          )))
     (aux X X)))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+;Exercise 26.1.2 Develop the function merge-sort, which sorts a list of numbers in ascending
+;order, using the following two auxiliary functions:
 
+
+;1. The first one, make-singles, constructs a list of one-item lists from the given list of numbers.
+;For example,
+;(equal? (make-singles (list 2 5 9 3))
+;(list (list 2) (list 5) (list 9) (list 3)))
+
+;; make-singles : listOf X -> listOf ( listOf X)
+;; bifurcates the given list into a list of list of indiviusal list members
+
+;(define (make-singles a-List) '())      ; stub
+(check-expect (make-singles '()) '())   ; terminating condition
+(check-expect (make-singles (list 2 5 9 3)) (list (list 2) (list 5) (list 9) (list 3)))
+
+(define (make-singles a-List)
+  (cond
+    [(empty? a-List) '()]
+    [else
+     (append
+      (list (list (first a-List)))
+      (make-singles (rest a-List)))])) 
+
+
+
+;2. The second one, merge-all-neighbors, merges pairs of neighboring lists. More specifically,
+;it consumes a list of lists (of numbers) and merges neighbors. For example,
+;(equal? (merge-all-neighbors (list (list 2) (list 5) (list 9) (list 3)))
+;(list (list 2 5) (list 3 9)))
+;(equal? (merge-all-neighbors (list (list 2 5) (list 3 9)))
+;(list (list 2 3 5 9)))
+
+;; merge-all-neighbors: (listOf listOf X) -> listOf X
+;; merges the neighbors of the listOf lists, such that the first member of the lists are in ascending order
+
+;(define (merge-all-neighbors LOL) '())        ; stub
+(check-expect (merge-all-neighbors '()) '())  ; terminating condition
+(check-expect (merge-all-neighbors (list (list 2) (list 5) (list 9) (list 3))) (list (list 2 5) (list 3 9)))
+(check-expect (merge-all-neighbors (list (list 2 4) (list 5 9))) (list (list 2 4 5 9)))
+
+
+
+(define (merge-all-neighbors LOL)
+  (cond
+    [(empty? LOL) '()]
+    [(empty? (rest LOL)) LOL]
+    [else
+     (if
+      (< (first (first LOL)) (first (first (rest LOL))))
+      (cons (first (first LOL)) (cons (first (first (rest LOL))) (merge-all-neighbors (rest LOL))))
+      (cons (first (first (rest LOL))) (cons (first (first LOL))  (merge-all-neighbors (rest LOL)))))
+     ]))
