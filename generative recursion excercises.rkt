@@ -68,19 +68,38 @@
 ;; merges the neighbors of the listOf lists, such that the first member of the lists are in ascending order
 
 ;(define (merge-all-neighbors LOL) '())        ; stub
-(check-expect (merge-all-neighbors '()) '())  ; terminating condition
-(check-expect (merge-all-neighbors (list (list 2) (list 5) (list 9) (list 3))) (list (list 2 5) (list 3 9)))
-(check-expect (merge-all-neighbors (list (list 2 4) (list 5 9))) (list (list 2 4 5 9)))
+;(check-expect (merge-all-neighbors '()) '())  ; terminating condition
+;(check-expect (merge-all-neighbors (list (list 2) (list 5) (list 9) (list 3))) (list (list 2 5) (list 3 9)))
+;(check-expect (merge-all-neighbors (list (list 2 4) (list 5 9))) (list (list 2 4 5 9)))
+;
+;
+;
+;(define (merge-all-neighbors LOL)
+;  (cond
+;    [(empty? LOL) '()]
+;    [(empty? (rest LOL)) LOL]
+;    [else
+;     (if
+;      (< (first (first LOL)) (first (first (rest LOL))))
+;      (cons (first (first LOL)) (cons (first (first (rest LOL))) (merge-all-neighbors (rest LOL))))
+;      (cons (first (first (rest LOL))) (cons (first (first LOL))  (merge-all-neighbors (rest LOL)))))
+;     ]))
 
+;Exercise 26.2.1 Define determine-solution and combine-solutions so that the function
+;generative-recursive-fun computes the length of its input
 
+;; get-length: ListOf X -> X
+;; returns the length of the given list
 
-(define (merge-all-neighbors LOL)
+;(define (get-length aList) 0)        ; stub
+(check-expect (get-length '()) 0)     ; terminating condition
+(check-expect (get-length '(3 4 5 6 7)) 5)
+
+(define (get-length aList)
   (cond
-    [(empty? LOL) '()]
-    [(empty? (rest LOL)) LOL]
+    [(empty? aList) 0]
+    ;[(empty? (rest aList)) 1]
     [else
-     (if
-      (< (first (first LOL)) (first (first (rest LOL))))
-      (cons (first (first LOL)) (cons (first (first (rest LOL))) (merge-all-neighbors (rest LOL))))
-      (cons (first (first (rest LOL))) (cons (first (first LOL))  (merge-all-neighbors (rest LOL)))))
-     ]))
+     (+
+      1
+      (get-length (rest aList)))]))
