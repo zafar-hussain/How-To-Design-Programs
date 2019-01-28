@@ -21,12 +21,35 @@
                (list 'E (list 'C 'F))
                (list 'F (list 'D 'G))
                (list 'G '())))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;Exercise 28.1.2 Develop the function neighbors. It consumes a node n and a graph g (see
+;exercise 28.1.1) and produces the list of neighbors of n in g.
 
-;; find-route: node node graph -> [listOf nodes]
+;; neighbors: node graph -> [listOf nodes]
+;; returns a list Of neighbors of node n in graph g
+
+;(define (neighbors n g) '())           ; stub
+(check-expect (neighbors 'D Graph) '())   ; basecase
+(check-expect (neighbors 'A Graph) (list 'B 'E))
+(check-expect (neighbors 'E Graph) (list 'C 'F))
+
+;; template to use : atomic + self recursive 
+(define (neighbors n g)
+  (cond
+    [(empty? g) (second (first g))]
+    [else
+     (if (symbol=? (first (first g)) n)
+         (second (first g))
+         (neighbors n (rest g)))]))
+
+
+
+;; find-route: node node graph -> [listOf nodes] or #f
 ;; returns a list of nodes detailing a path from the given origin node to the destination node
+;; - or false if no path is found
 
-(define (find-route start end g) '())      ; stub
-(check-expect (find-route 'A 'B '()) '())  ; terminating condition
-(check-expect (find-route 'A 'B Graph) '(B)) 
-(check-expect (find-route 'A 'F Graph) '(B F))
-(check-expect (find-route 'C 'G Graph) '()) 
+(define (find-route start end g) #f)      ; stub
+(check-expect (find-route 'A 'B '()) #f)  ; terminating condition
+(check-expect (find-route 'A 'B Graph) '(A B)) 
+(check-expect (find-route 'A 'F Graph) '(A B F))
+(check-expect (find-route 'C 'G Graph) #f) 
