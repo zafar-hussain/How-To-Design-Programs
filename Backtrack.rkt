@@ -42,8 +42,6 @@
          (second (first g))
          (neighbors n (rest g)))]))
 
-
-
 ;; find-route: node node graph -> [listOf nodes] or #f
 ;; returns a list of nodes detailing a path from the given origin node to the destination node
 ;; - or false if no path is found
