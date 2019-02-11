@@ -58,4 +58,32 @@
     [(<= (length los) n) '()]
     ;[(empty? los) '()]
     [else
-     (drop (rest los) (sub1 n))])) 
+     (drop (rest los) (sub1 n))]))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;Exercise 422. Define the function list->chunks. It consumes a list l of arbitrary data and a
+;natural number n. The function’s result is a list of list chunks of size n. Each chunk represents a
+;sub-sequence of items in l.
+
+;; list->chunks: l n -> l
+;; returns a list of n sized chuncks
+
+;(define (list->chunks los n) '())                                                           ; stub
+(check-expect (list->chunks  '() 2)                     '())                                 ; basecase, trivial
+(check-expect (list->chunks  '("a") 2)                  (list '("a")))                               ; corresponding case
+(check-expect (list->chunks   (list "a" "b" "c" "d") 2) (list (list "a" "b") (list "c" "d")))
+(check-expect (list->chunks   (list "a" "b" "c") 2)     (list (list "a" "b") (list "c")))
+(check-expect (list->chunks  '("a" "b" "c" "d" "e") 3)  (list (list "a" "b" "c") (list "d" "e")))
+
+(define (list->chunks los n)
+  (cond
+    [(empty? los) '()]
+    [else
+     (cons
+      (take los n)
+      (list->chunks (drop los n) n))])) 
+
+
+;Use list->chunks to define bundle via function composition
+
