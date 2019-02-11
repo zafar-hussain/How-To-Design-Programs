@@ -17,30 +17,28 @@
 (define (bundle los n)
   (cond
     [(empty? los) '()]
-    [(empty? (rest los)) los]
     [else
      (append                                ;; append lists          
-      (take los n)                          ;; take chunk here via an aux procedure
+      (list (implode (take los n)))         ;; take chunk here via an aux procedure
       (bundle (drop los n) n))]))           ;; drops n elements
 
 ;;Design take. It consumes a list l and a natural number n. It produces the first
 ;;n items from l or all of l if it is too short.
 
 ;(define (take los n) '())                    ; stub
-(check-expect (take '("a" "b" "c" "d") 0) '(""))        ; trivial case
-(check-expect (take '("a" "b" "c" "d") 2) '("ab"))
-(check-expect (take '("a" "b" "c" "d") 3) '("abc"))
+(check-expect (take '("a" "b" "c" "d") 0) '())        ; trivial case
+(check-expect (take '("a" "b" "c" "d") 2) '("a" "b"))
+(check-expect (take '("a" "b" "c" "d") 3) '("a" "b" "c"))
 
 (define (take los n)
-  (local [(define (take los n)
-            (cond
-              [(zero? n) '()]
-              [(<= (length los) n) los]
-              [else
-               (cons
-                (first los)
-                (take (rest los) (sub1 n)))]))]
-    (list (implode (take los n)))))
+  (cond
+    [(zero? n) '()]
+    [(<= (length los) n) los]
+    [else
+     (cons
+      (first los)
+      (take (rest los) (sub1 n)))]))
+
 
 ;;Design drop. It consumes a list l and a natural number n. Its result is l with the first n items
 ;;removed or just ’() if l is too short
@@ -49,7 +47,7 @@
 
 ;(define (drop l n) '())                                           ; stub
 (check-expect (drop '("a" "b" "c" "d") 0) '("a" "b" "c" "d"))      ; basecase
-(check-expect (drop '("a" "b") 3)         '())                     ;  list is too short
+(check-expect (drop '("a" "b") 3)         '())                     ; list is too short
 (check-expect (drop '("a" "b" "c" "d") 2) '("c" "d"))
 (check-expect (drop '("a" "b" "c" "d") 3) '("d"))
 
@@ -57,5 +55,6 @@
   (cond
     [(zero? n) los]
     [(<= (length los) n) '()]
+    ;[(empty? los) '()]
     [else
      (drop (rest los) (sub1 n))])) 
