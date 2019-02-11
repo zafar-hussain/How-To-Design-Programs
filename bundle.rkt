@@ -85,8 +85,27 @@
     [else
      (cons
       (take los n)
-      (list->chunks (drop los n) n))])) 
+      (list->chunks (drop los n) n))]))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;Exercise 423. Define partition. It consumes a String s and a natural number n. The
+;function produces a list of string chunks of size n.
+;
+;For non-empty strings s and positive natural numbers n,
+;(equal? (partition s n) (bundle (explode s) n)) 
+;
+;#true. But don’t use this equality as the definition for partition; use substring instead.
+;Hint Have partition produce its natural result for the empty string. For the case where n is
+;0, see exercise 421.
 
+;; partition : s n -> [ListOf s]
+;; returns a listOf chunks of string of size n
 
+;(define (partition s n) '())            ; stub
+(check-expect (partition "" 9) '())     ; basecase
+(check-expect (partition "abcd" 2) '("ab" "cd"))
+(check-expect (partition "abcd" 3) '("abc" "d"))
+
+(define (partition s n)
+  (bundle (explode s) n))
