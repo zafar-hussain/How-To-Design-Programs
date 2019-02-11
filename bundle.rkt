@@ -43,6 +43,7 @@
 ;;Design drop. It consumes a list l and a natural number n. Its result is l with the first n items
 ;;removed or just ’() if l is too short
 
+
 ;; drop : [listOf X] n -> [listOf X]
 
 ;(define (drop l n) '())                                           ; stub
