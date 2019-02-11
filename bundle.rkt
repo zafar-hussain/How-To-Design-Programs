@@ -15,12 +15,14 @@
 ;; template to use : is one of, structural recursion
 
 (define (bundle los n)
-  (cond
-    [(empty? los) '()]
-    [else
-     (append                                ;; append lists          
-      (list (implode (take los n)))         ;; take chunk here via an aux procedure
-      (bundle (drop los n) n))]))           ;; drops n elements
+  ;  (cond
+  ;    [(empty? los) '()]
+  ;    [else
+  ;     (append                                ;; append lists          
+  ;      (list (implode (take los n)))         ;; take chunk here via an aux procedure
+  ;      (bundle (drop los n) n))]))           ;; drops n elements
+  (map implode (list->chunks los n)))          ;Use list->chunks to define bundle via function composition
+
 
 ;;Design take. It consumes a list l and a natural number n. It produces the first
 ;;n items from l or all of l if it is too short.
@@ -33,7 +35,8 @@
 (define (take los n)
   (cond
     [(zero? n) '()]
-    [(<= (length los) n) los]
+    ;[(<= (length los) n) los]
+    [(empty? los) los]
     [else
      (cons
       (first los)
@@ -55,8 +58,8 @@
 (define (drop los n)
   (cond
     [(zero? n) los]
-    [(<= (length los) n) '()]
-    ;[(empty? los) '()]
+    ;[(<= (length los) n) '()]
+    [(empty? los) los]
     [else
      (drop (rest los) (sub1 n))]))
 
@@ -78,12 +81,12 @@
 
 (define (list->chunks los n)
   (cond
-    [(empty? los) '()]
+    [(empty? los) los]
     [else
      (cons
       (take los n)
       (list->chunks (drop los n) n))])) 
 
 
-;Use list->chunks to define bundle via function composition
+
 
