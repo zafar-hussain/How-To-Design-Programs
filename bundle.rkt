@@ -7,6 +7,7 @@
 ;(define (bundle los n)                           '())                           ; stub
 (check-expect (bundle  '() 2)                     '())                           ; basecase, trivial
 (check-expect (bundle  '( "a") 2)                 '("a"))                        ; corresponding case
+(check-expect (bundle   (list "a" "b" "c" "d") 0) '("a" "b" "c" "d"))
 (check-expect (bundle   (list "a" "b" "c" "d") 2) '("ab" "cd"))
 (check-expect (bundle   (list "a" "b" "c") 2)     '("ab" "c"))
 (check-expect (bundle  '("a" "b" "c" "d" "e") 3)  '("abc" "de"))
@@ -15,13 +16,14 @@
 ;; template to use : is one of, structural recursion
 
 (define (bundle los n)
-  ;  (cond
-  ;    [(empty? los) '()]
-  ;    [else
-  ;     (append                                ;; append lists          
-  ;      (list (implode (take los n)))         ;; take chunk here via an aux procedure
-  ;      (bundle (drop los n) n))]))           ;; drops n elements
-  (map implode (list->chunks los n)))          ;Use list->chunks to define bundle via function composition
+    (cond
+      [(empty? los) '()]
+      [(zero? n)    los]
+      [else
+       (append                                ;; append lists          
+        (list (implode (take los n)))         ;; take chunk here via an aux procedure
+        (bundle (drop los n) n))]))           ;; drops n elements
+  ;(map implode (list->chunks los n)))          ;Use list->chunks to define bundle via function composition
 
 
 ;;Design take. It consumes a list l and a natural number n. It produces the first
@@ -78,9 +80,12 @@
 (check-expect (list->chunks   (list "a" "b" "c" "d") 2) (list (list "a" "b") (list "c" "d")))
 (check-expect (list->chunks   (list "a" "b" "c") 2)     (list (list "a" "b") (list "c")))
 (check-expect (list->chunks  '("a" "b" "c" "d" "e") 3)  (list (list "a" "b" "c") (list "d" "e")))
+(check-expect (list->chunks   (list "a" "b" "c" "d") 0) (list "a" "b" "c" "d"))
+
 
 (define (list->chunks los n)
   (cond
+    [(zero? n) los]
     [(empty? los) los]
     [else
      (cons
