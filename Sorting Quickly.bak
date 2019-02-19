@@ -18,11 +18,14 @@
 (define (quick-sort LOX)
   (cond
     [(empty? LOX) '()]
+    [(empty? (rest LOX)) LOX]
     [else
-     (append
-      (quick-sort (smaller-than (first LOX) (rest LOX)))
-      (list (first LOX))
-      (quick-sort (larger-than  (first LOX) (rest LOX))))]))
+     (local [( define pivot (first LOX))
+             ( define theRest (rest LOX))]
+       (append
+        (quick-sort (smaller-than pivot theRest))
+        (list pivot)
+        (quick-sort (larger-than  pivot theRest))))]))
 
 ;; smaller-than : X LOX -> LOX
 ;; returns of all the items that are less than the given X

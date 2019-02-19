@@ -42,7 +42,7 @@
   ;      (< (first LOX) X)
   ;      (cons (first LOX) (smaller-than X (rest LOX)))
   ;      (smaller-than X (rest LOX)))]))
-  (filter (lambda (b) (> X b)) LOX ))
+  (filter (lambda (b) (>= X b)) LOX ))
 
 ;; larger-than : X LOX -> LOX
 ;; rerturns a list of items larger than the given X
