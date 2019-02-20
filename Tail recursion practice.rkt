@@ -23,6 +23,10 @@
 
 ;; tail recursion with accumulator
 
+;;(product '(2 3 4)) -> (product '(3 4) (* 2 1)))
+;;                      (product '(4)   (* 3 2)))
+;;                      (product '()    (* 4 6)))
+;;                      (* 24 1)
 (define (product lox)
   (local [
           (define (product lox acc)
@@ -31,3 +35,38 @@
               [else
                (product (rest lox) (* (first lox) acc))]))]
     (product lox 1)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;Exercise 31.3.4 Develop an accumulator-style version of how-many, which is the function that
+;determines the number of items on a list. Show the stage that explains what the accumulator
+;represents
+
+;; how-many : lox -> n
+;; returns the number of items in the given list
+
+;(define (how-many lox) 0)        ; stub
+(check-expect (how-many '()) 0)  ; basecase
+(check-expect (how-many '(a b c)) 3)
+
+;; template used : structural recursion
+#;
+(define (how-many lox)
+  (cond
+    [(empty? lox) 0] ;; ,- acc must be a number initial value 0
+    [else
+     (add1
+      (how-many (rest lox)))]))
+
+
+;; template used : tail recursion with an accumulator
+
+(define (how-many lox)
+  (local [
+          (define (how-many lox acc)
+            (cond
+              [(empty? lox) acc]
+              [else
+               (how-many (rest lox) (add1 acc))]))]
+    (how-many lox 0)))
+             
