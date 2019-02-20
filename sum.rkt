@@ -1,32 +1,30 @@
 ;; The first three lines of this file were inserted by DrRacket. They record metadata
 ;; about the language level of this file in a form that our tools can easily process.
-#reader(lib "htdp-intermediate-reader.ss" "lang")((modname sum) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
-;; sum : lon -> number
-;; sums up the given list of numbers
-(check-expect (sum empty) 0) ; basecase
-(check-expect (sum (cons 1 (cons 3 empty))) 4)
-(check-expect (sum (list 1 2 3)) 6)
+#reader(lib "htdp-advanced-reader.ss" "lang")((modname sum) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
+;; sum : lox -> x
+;; returns the sum of all the items in the given list
 
-;(define (sum lon) 0) ;  stub
+;(define (sum lox) 0)       ; stub
+(check-expect (sum '()) 0) ; basecase
+(check-expect (sum '(1 2 3)) 6)
 
-;; template
+;; template used : structural recursion
 #;
-(define (fn-for-lon lon)
+(define (sum lox)
   (cond
-    [(empty? lon) ...]
-    [else
-     (...
-      ... (first lon) ...
-      ... (fn-for-lon (rest lon)) ...)
-     ]
-    ))
- 
-(define (sum lon)
-  (cond
-    [(empty? lon) 0]
+    [(empty? lox) 0]
     [else
      (+
-      (first lon)
-      (sum (rest lon)))
-     ]
-    ))
+      (first lox)
+      (sum (rest lox)))]))
+
+;; template used : accumulator
+
+(define (sum lox)
+  (local [
+          (define (sum lox acc)
+            (cond
+              [(empty? lox) acc]
+              [else
+               (sum (rest lox) (+ (first lox) acc))]))]
+    (sum lox 0)))
