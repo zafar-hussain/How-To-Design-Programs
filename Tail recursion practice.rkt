@@ -69,4 +69,61 @@
               [else
                (how-many (rest lox) (add1 acc))]))]
     (how-many lox 0)))
-             
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;Exercise 31.3.5 Develop an accumulator-style version of add-to-pi, the function that adds a
+;natural number to pi without using + (see section 11.5). Show the stage that explains what the
+;accumulator represents.
+
+;; add-to-pi : n -> n
+;; returns the sum of the given number  and pi, without using the operator "+"
+(define PI 3.14)
+;(define (add-to-pi n) PI)          ; stub
+
+(check-within (add-to-pi 0) 3.14 0.001)  ; basecase
+(check-within (add-to-pi 2) 5.14 0.001)
+(check-within (add-to-pi 6) 9.14 0.001)
+
+;; template used : structural recursion
+#;
+(define (add-to-pi n)
+  (cond
+    [(zero? n) PI]
+    [else
+     (add1
+      (add-to-pi (sub1 n)))])) 
+
+;; template used : tail recursion with an accumulator
+
+(define (add-to-pi n)
+  ;  (local [
+  ;          (define (add-to-pi n acc)
+  ;            (cond
+  ;              [(zero? n) acc]
+  ;              [else
+  ;               (add-to-pi (sub1 n) (add1 acc))]))]
+  ;    (add-to-pi n PI)))
+  (add-n-to-x PI n))
+
+;Generalize the function so that it adds two numbers, the first one a natural number, without
+;using +
+
+;; add-n-to-x : x n -> x
+;; returns the sum of x and n without using the operator "+"
+
+;(define (add-n-to-x x n) x)         ; stub
+(check-expect (add-n-to-x 99 0) 99) ; basecase
+(check-expect (add-n-to-x 99 10) 109)
+
+(define (add-n-to-x x n)
+  (local [
+          (define (add-n-to-x n acc)
+            (cond
+              [(zero? n) acc]
+              [else
+               (add-n-to-x (sub1 n) (add1 acc))]))]
+    (add-n-to-x n x)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  
