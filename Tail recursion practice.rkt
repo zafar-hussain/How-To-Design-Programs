@@ -224,9 +224,21 @@
                 (not (zero? (remainder p n)))            ;; is divisible by n hence not prime
                 (is-prime? (sub1 n) p))]))]              ;; any number between .. and n - 1, hence (sub1 n)
     (is-prime? (sub1 n) n)))
+;; a better alternate, will finish earliar the moment a proper divisor for n is found
+
+(define (is-prime? n)
+  (local [
+          (define p n)
+          (define (is-prime? n)
+            (cond
+              [(= n 1) #t]                              ;; any number between 2 and ...
+              [(zero? (remainder p n)) #f]              ;; is divisible by n hence not prime, proper divisor found
+              [else
+               (is-prime? (sub1 n))]))]              ;; any number between .. and n - 1, hence (sub1 n)
+    (is-prime? (sub1 n))))
 
 ;; template used : tail recursion with an accumulator
-
+#;
 (define (is-prime? n)
   (local [
           (define p n)
@@ -235,5 +247,6 @@
               [(= n 1) acc]                              ;; any number between 2 and ...
               [else
                (is-prime? (sub1 n) (and (not (zero? (remainder p n))) acc))] ;; any number between .. and n - 1, hence (sub1 n)
+                                                                             ;; WE NEED TO REMEMBER ALL THE PAST N-1 WERE NOT PROPER DIVISORS
               ))]              
     (is-prime? (sub1 n) #t)))
