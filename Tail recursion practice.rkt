@@ -229,12 +229,11 @@
 
 (define (is-prime? n)
   (local [
-          (define (is-prime? n p acc)
+          (define p n)
+          (define (is-prime? n acc)
             (cond
               [(= n 1) acc]                              ;; any number between 2 and ...
               [else
-               (is-prime?
-                (sub1 n)
-                p 
-                (and (not (zero? (remainder p n))) acc))]))]              ;; any number between .. and n - 1, hence (sub1 n)
-    (is-prime? (sub1 n) n #t)))
+               (is-prime? (sub1 n) (and (not (zero? (remainder p n))) acc))] ;; any number between .. and n - 1, hence (sub1 n)
+              ))]              
+    (is-prime? (sub1 n) #t)))
