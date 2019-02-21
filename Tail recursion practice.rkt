@@ -127,3 +127,74 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   
+;Exercise 31.3.6 Develop the function make-palindrome, which accepts a nonempty list and
+;constructs a palindrome by mirroring the list around the last item. Thus, if we were to represent
+;the word “abc” and apply make-palindrome, we would get back the representation of “abcba”.
+
+;; make-palindrome : los -> los
+;; returns a palindrome of the given list
+
+;(define (make-palindrome los)       '())             ; stub
+;(check-expect (make-palindrome '()) '())              ; basecase
+(check-expect (make-palindrome '(a b c)) '(a b c b a))
+
+;; template used : structural recursion
+
+(define (make-palindrome los)
+  (append
+   los
+   (rest (reverse los))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;Exercise 31.3.7 Develop tol0. It consumes a list of digits and produces the corresponding
+;number. The first item on the list is the most significant digit.
+
+;; given a list of numbers, it constructs a number
+;; to10 : lon -> n
+
+;(define (to10 lon) 0)          ; stub
+(check-expect (to10 '()) 0)    ; basecase
+(check-expect (to10 (list 1 0 2))  102)
+(check-expect (to10 (list 2 1)) (+ (* 2 (expt 10 1)) (* 1 (expt 10 0))))
+
+;; template used : structural recursion
+#;
+(define (to10 lon)
+  (local [
+          (define power (sub1 (length lon)))
+          (define (to10 lon p)
+            (cond
+              [(empty? lon) 0]
+              [else
+               (+
+                (* (first lon) (expt 10 p))
+                (to10 (rest lon) (sub1 p)))]))]
+    (to10 lon power)))
+
+;; template used : tail recursion with accumulator
+(define (to10 lon)
+  ;  (local [
+  ;          (define power (sub1 (length lon)))
+  ;          (define (to10 lon p acc)
+  ;            (cond
+  ;              [(empty? lon) acc]
+  ;              [else
+  ;               (to10 (rest lon) (sub1 p) (+ (* (first lon) (expt 10 p)) acc))]))]
+  ;    (to10 lon power 0)))
+  (tol0-general 10 lon))
+          
+
+;; Now generalize the function so that it consumes a base b and a list of b-digits
+(check-expect (tol0-general 10 (list 1 0 2)) 102)
+(check-expect (tol0-general 08 (list 1 0 2))  66)
+
+(define (tol0-general N lon)
+  (local [
+          (define power (sub1 (length lon)))
+          (define (tol0-general lon p acc)
+            (cond
+              [(empty? lon) acc]
+              [else
+               (tol0-general (rest lon) (sub1 p) (+ (* (first lon) (expt N p)) acc))]))]
+    (tol0-general lon power 0)))
