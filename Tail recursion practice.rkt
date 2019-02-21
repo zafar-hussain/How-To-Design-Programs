@@ -198,3 +198,43 @@
               [else
                (tol0-general (rest lon) (sub1 p) (+ (* (first lon) (expt N p)) acc))]))]
     (tol0-general lon power 0)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;Exercise 31.3.8 Develop the function is-prime?, which consumes a natural number and returns
+;true if it is prime and false otherwise. A number n is prime if it is not divisible by any number
+;between 2 and n – 1.
+
+;; is-prime? : n -> boolean
+;; returns true if the given number 'n' is not divisible by any number between 2 and n - 1
+
+;(define (is-prime? n) #f)        ; stub
+(check-expect (is-prime? 10) #f)
+(check-expect (is-prime?  7) #t)
+
+;; template used : structural recursion
+#;
+(define (is-prime? n)
+  (local [
+          (define (is-prime? n p)
+            (cond
+              [(= n 1) #t]                              ;; any number between 2 and ...
+              [else
+               (and
+                (not (zero? (remainder p n)))            ;; is divisible by n hence not prime
+                (is-prime? (sub1 n) p))]))]              ;; any number between .. and n - 1, hence (sub1 n)
+    (is-prime? (sub1 n) n)))
+
+;; template used : tail recursion with an accumulator
+
+(define (is-prime? n)
+  (local [
+          (define (is-prime? n p acc)
+            (cond
+              [(= n 1) acc]                              ;; any number between 2 and ...
+              [else
+               (is-prime?
+                (sub1 n)
+                p 
+                (and (not (zero? (remainder p n))) acc))]))]              ;; any number between .. and n - 1, hence (sub1 n)
+    (is-prime? (sub1 n) n #t)))
