@@ -9,7 +9,7 @@
 (check-expect (invert '(a b c)) '(c b a))
 
 ;; template used : structural recursion
-
+#;
 (define (invert lox)
   (cond
     [(empty? lox)'()]
@@ -17,6 +17,33 @@
      (put-to-last                ;; puts the given element to the end of the given list  
       (first lox)                ;; first of the list
       (invert (rest lox)))]))      ;; already inverted rest of the list
+#;
+(define (invert lox)
+  (cond
+    [(empty? lox)'()]
+    [else
+     (append
+      (invert (rest lox))  
+      (list (first lox)))]))       
+
+
+(define (invert lox)
+  (local [
+          (define (invert lox acc)
+            (cond
+              [(empty? lox) acc]
+              [else                     
+               (invert (rest lox) (append (list (first lox)) acc)) ]))]
+    (invert lox '())))
+
+;; (invert '(a b c)) => (put-to-last 'a (invert '(b c))
+;; (invert '(a b c)) => (put-to-last 'a (put-to-last 'b (invert '(c))
+;; (invert '(a b c)) => (put-to-last 'a (put-to-last 'b (put-to-last 'c (invert '())
+;; (invert '(a b c)) => (put-to-last 'a (put-to-last 'b (put-to-last 'c '())
+;; (invert '(a b c)) => (put-to-last 'a (put-to-last 'b (put-to-last '(c))
+;; (invert '(a b c)) => (put-to-last 'a (put-to-last 'b '(c))
+;; (invert '(a b c)) => (put-to-last 'a '(c b))
+;; (invert '(a b c)) =>  '(c b a))
 
 ;; aus-fn : put-to-last : x [listOf X] -> [listOf X]
 ;; inserts the given x towards the end of the list
