@@ -139,3 +139,35 @@
 
            (proper-blue-eyed-ancestor? (child-father a-ftree))
            (proper-blue-eyed-ancestor? (child-mother a-ftree)))]))
+
+
+;; blue-eyed-ancestors : tree -> listOf symbols
+;; given a family tree returns a list of blue-eyes ancestors
+
+;(define (blue-eyed-ancestors ft) '())         ; stub
+(check-expect (blue-eyed-ancestors '()) '())  ; basecase
+(check-expect (blue-eyed-ancestors Carl) '()) ; no ancestor
+(check-expect (blue-eyed-ancestors Gustav) '(Eva))
+(check-expect (blue-eyed-ancestors Adam) '())
+
+#;
+(define (blue-eyed-ancestors ft)
+  (cond
+    [(empty? ft) '()]
+    [else
+     (if (symbol=? (child-eyecolor ft) 'blue)
+         (cons (child-name ft) (append (blue-eyed-ancestors (child-father ft)) (blue-eyed-ancestors (child-mother ft))))
+         (append (blue-eyed-ancestors (child-father ft)) (blue-eyed-ancestors (child-mother ft)))
+         )]))
+
+(define (blue-eyed-ancestors ft)
+  (cond
+    [(empty? ft) '()]
+    [else
+     (local [(define blue-eyed-parents
+               (append (blue-eyed-ancestors (child-father ft)) (blue-eyed-ancestors (child-mother ft))))]
+       (cond
+         [(symbol=? (child-eyecolor ft) 'blue) (cons (child-name ft)  blue-eyed-parents)]
+         [else blue-eyed-parents]))
+     ]))
+
