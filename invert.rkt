@@ -17,7 +17,9 @@
      (put-to-last                ;; puts the given element to the end of the given list  
       (first lox)                ;; first of the list
       (invert (rest lox)))]))      ;; already inverted rest of the list
+
 #;
+;; cpu time: 2699 real time: 2698 gc time: 1670
 (define (invert lox)
   (cond
     [(empty? lox)'()]
@@ -27,13 +29,14 @@
       (list (first lox)))]))       
 
 
+;;cpu time: 31 real time: 19 gc time: 0
 (define (invert lox)
   (local [
           (define (invert lox acc)
             (cond
               [(empty? lox) acc]
               [else                     
-               (invert (rest lox) (append (list (first lox)) acc)) ]))]
+               (invert (rest lox) (cons (first lox) acc)) ]))]
     (invert lox '())))
 
 ;; (invert '(a b c)) => (put-to-last 'a (invert '(b c))
@@ -61,3 +64,5 @@
      (cons
       (first lox)
       (put-to-last x (rest lox)))]))
+
+(time (invert (build-list 10000 add1)))
