@@ -15,7 +15,9 @@
 (check-expect (product '(1 2 3)) 6)
 
 ;; template used : structural recursion
-#;
+;(time (product (build-list 10000 add1)))
+;cpu time: 140 real time: 140 gc time: 78
+
 (define (product lon)
   (cond
     [(empty? lon) 1]
@@ -26,7 +28,9 @@
 
 
 ;; template used : tail recursion with an accumulator
-
+;(time (product (build-list 10000 add1)))
+;cpu time: 156 real time: 161 gc time: 80
+#;
 (define (product lon)
   (local [
           (define (product lon acc)
