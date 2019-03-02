@@ -12,7 +12,7 @@
 ; [NEList-of 1String] -> [NEList-of 1String]
 ; creates a palindrome from s0
 (check-expect  (mirror (explode "abc")) (explode "abcba"))
-
+#;
 (define (mirror s0)
   (append (all-but-last s0)
           (list (last s0))
@@ -47,4 +47,16 @@
 ;Even with local definition for the result of all-but-last,
 ;the function needs three traversals.
 ;While these traversals aren’t “stacked” and therefore don’t have a disastrous impact on the function’s performance,
-;an accumulator version can compute the same result with a single traversal. 
+;an accumulator version can compute the same result with a single traversal.
+
+
+(define (mirror lox)
+  (local [
+          (define old-lox lox)
+          (define (mirror lox acc)
+            (cond
+              [(empty? (rest lox)) (append old-lox acc)]       ; last item reached, combine original list with acc
+              [else
+               (mirror (rest lox) (cons (first lox) acc))]))]  ; items stored in acc in reverse order
+    (mirror lox '())))
+
